@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/04_parameter.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="alert-box" class="alert-box">
+        <span id="content">안녕하세요</span>
+        <button onclick="showAlert('none', 'closed')">닫기</button>
+    </div>
+    <button onclick="showAlert('block', '아이디 입력하세요')">버튼1</button>
+    <button onclick="showAlert('block', '비밀번호 입력하세요')">버튼2</button>
+
+    <script>
+        // 구멍 자리에 원하는 것을 넣을 수 있음
+        // alert('block') = document.getElementById('alert-box').style.display = 'block';
+        // alert('none') = document.getElementById('alert-box').style.display = 'none';
+        // alert(123) = document.getElementById('alert-box').style.display = 123;
+        // 함수 하나로 여러 문법 사용 가능
+        // 구멍 자리에 들어가는 것을 인자, parameter, argument 등으로 부름
+        // 파라미터 작명은 아무렇게나 가능
+        function showAlert(a, b){
+            document.getElementById('alert-box').style.display = a;
+            document.getElementById('content').innerHTML = b;
+        }
+
+        function plus(a, b){
+            a + b
+        }
+    </script>
+</body>
+
+</html>
