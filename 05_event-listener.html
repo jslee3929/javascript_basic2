@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/05_event-listener.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="alert-box" class="alert-box">
+        <span class="content">안녕하세요</span>
+        <button id="close">닫기</button>
+    </div>
+    <button onclick="showAlert('block', '아이디 입력하세요')">버튼1</button>
+    <button onclick="showAlert('block', '비밀번호 입력하세요')">버튼2</button>
+
+    <script>
+        function showAlert(a, b){
+            document.getElementById('alert-box').style.display = a;
+            // getElementsByClassName을 쓸 때는 인덱싱을 해줘야 함
+            document.getElementsByClassName('content')[0].innerHTML = b;
+        }
+
+        // addEventListener() 쓰면 onclick 필요 없음
+        // 1. getElementById('close')를 클릭하면
+        // 2. function(){} 안의 코드를 실행해 줌
+        document.getElementById('close').addEventListener('click', function(){
+            document.getElementById('alert-box').style.display = 'none';
+        });
+
+        // event = 클릭, 키입력, 스크롤, 드래그 등
+        // event 감지하고 싶으면 addEventListener('event명') 쓰면 됨
+
+        // 파라미터 자리에 들어가는 함수를 콜백함수라고 부름
+    </script>
+</body>
+
+</html>
