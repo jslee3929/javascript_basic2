@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/03_function.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="alert-box" class="alert-box">
+        알림창임
+        <button onclick="closeAlert()">닫기</button>
+    </div>
+    <button onclick="showAlert()">버튼</button>
+
+    <script>
+        // function = 함수
+        // 함수명 영어작명 시
+        // 1. 소문자 시작
+        // 2. camelCase 식으로 작명
+        function showAlert(){
+            document.getElementById('alert-box').style.display = 'block';
+        }
+
+        function closeAlert(){
+            document.getElementById('alert-box').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
