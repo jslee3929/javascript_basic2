@@ -1,0 +1,11 @@
+.list-group {
+    display: none;
+}
+
+/* css 파일은 하단에 적을수록 우선 적용 */
+/* class 탈부착 식의 장점 */
+/* 1. 애니메이션 추가 쉬움 */
+/* 2. 재사용 편리 */
+.show {
+    display: block;
+}
