@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function 삼육구게임(num) {
+            if (num % 10 == 3 || num % 10 == 6 || num % 10 == 9) {
+                console.log('박수');
+            } else {
+                console.log('통과');
+            }
+        }
+
+        삼육구게임(6); // 박수
+        삼육구게임(9); // 박수
+        삼육구게임(11); // 통과
+        삼육구게임(16); // 박수
+    </script>
+
+    <script>
+        function 합격했냐(num1, num2) {
+            if (typeof(num1) !== 'number' || typeof(num2) !== 'number'){
+                alert('장난치지 마세요');
+            } else if (num1 < 40 || num2 < 40) {
+                console.log('불합격');
+            } else if (num1 + num2 < 120) {
+                console.log('불합격');
+            } else {
+                console.log('합격');
+            }
+        }
+
+        합격했냐("하하", 70); // 장난치지 마세요
+        합격했냐(70, 70); // 합격
+        합격했냐(30, 100); // 불합격
+        합격했냐(50, 50); // 불합격
+    </script>
+</body>
+</html>
