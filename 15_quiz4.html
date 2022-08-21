@@ -98,16 +98,18 @@
     </script>
 
     <script>
-        var second = 4
-        var decreaseSecond = setInterval(decrease, 1000)
+        var second = 4;
+        var decreaseSecond = setInterval(decrease, 1000);
 
         function decrease(){
             document.getElementById('second').innerHTML = second;
             second -= 1;
-        }
+            console.log(second);
 
-        if (second == 0){
-            clearTimeout(decreaseSecond);
+            // 이런 식으로 함수 안에서도 선언 가능
+            if (second == 0){
+                clearInterval(decreaseSecond);
+            }
         }
 
         setTimeout(function(){
