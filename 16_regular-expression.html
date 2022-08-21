@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="css/12_variable.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="black-bg">
+        <div class="white-bg">
+            <h4>로그인하세요</h4>
+            <form action="09-1_success.html">
+                <div class="my-3">
+                    <input type="text" class="form-control">
+                </div>
+                <div class="my-3">
+                    <input type="password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">전송</button>
+                <button type="button" class="btn btn-danger" id="close">닫기</button>
+            </form>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <span class="navbar-brand">JSShop</span>
+            <span class="badge bg-dark ms-auto mx-3">Dark 🔄</span>
+            <button class="navbar-toggler" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="list-container">
+        <ul class="list-group">
+            <li class="list-group-item">An item</li>
+            <li class="list-group-item">A second item</li>
+            <li class="list-group-item">A third item</li>
+            <li class="list-group-item">A fourth item</li>
+            <li class="list-group-item">And a fifth one</li>
+        </ul>
+    </div>
+
+    <div class="main-bg">
+        <h4>Shirts on Sale</h4>
+        <button id="login" class="btn btn-danger">로그인</button>
+    </div>
+
+    <div class="alert alert-danger">
+        <span id="second">5</span>초 이내 구매시 사은품 증정!
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+    <script>
+        $('.navbar-toggler').on('click', function () {
+            $('.list-container').toggleClass('show');
+        })
+
+        $('#login').on('click', function () {
+            $('.black-bg').addClass('show-modal');
+        })
+
+        $('#close').on('click', function () {
+            $('.black-bg').removeClass('show-modal');
+        })
+    </script>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function (event) {
+            if (document.getElementsByClassName('form-control')[0].value == '') {
+                alert('아이디를 입력하세요');
+                event.preventDefault();
+            } else if (/\S+@\S+\.\S+/.test(document.getElementsByClassName('form-control')[0].value) == false) {
+                alert('이메일 형식이 잘못되었습니다.');
+                event.preventDefault();
+            } else if (document.getElementsByClassName('form-control')[1].value == '') {
+                alert('비밀번호를 입력하세요');
+                event.preventDefault();
+            } else if (document.getElementsByClassName('form-control')[1].value.length < 6) {
+                alert('비밀번호를 6자 이상 입력하세요');
+                event.preventDefault();
+            } else if (/[A-Z]/.test(document.getElementsByClassName('form-control')[1].value) == false) {
+                alert('비밀번호에는 최소 1개의 대문자가 포함되어야 합니다.');
+                event.preventDefault();
+            } else {
+                console.log('전송 완료');
+            }
+        });
+
+        // .includes() = 문자 검사하는 간단한 방법
+        // 'abc'.includes('a') // true
+        // A로 끝나냐, 한글이 들어있냐, 영어가 들어있냐, 숫자가 1회 출현하냐 이런 건 검사 못함
+        
+        // 정규식
+        // /검사할 문자/.test('검사당할 문자')
+        // /a/.test('abcde') // a를 한번만 찾기, true
+        // /a+/.test('abcde') // a를 여러번 찾기, true
+        // /[a-z]/.test('abcde') // a부터 z까지의 문자 중 아무 글자 1개가 들어있는가?, true
+        // /[a-zA-z]/.test('abcde') // 아무 알파벳 중 1글자가 들어있는가?, true
+        // /[ㄱ-ㅎㅏ-ㅣ가-힣]/.test('abcde') // 아무 한국어 글자 중 1글자가 들어있는가?, false
+        // /[0-9]/.test('12345') // 숫자가 들어있는가? true
+        // /\S/.test('abcde') // 아무 문자 1개가 들어있는가? (특수기호 포함) true
+        // /^a/.test('abcde') // a로 시작하는가? true
+        // /a$/.test('abcde') // a로 끝나는가? false
+        // /a|b/.test('abcde') // a 아니면 b가 들어있는가? true
+        // /(a|b)/.test('abcde') // 괄호도 사용 가능함 true
+
+        // 정규식으로 이메일 검사하기
+        // /\S+@\S+\.\S+/.test('aaa@bbb.ccc')
+        // .은 특수한 정규식 문법이므로 \를 앞에 써줘야 함
+        // \S를 쓰면 1글자가 있을 때만 true가 됨 (a@b.c)
+        // 그래서 \S+를 써야 함 (+ = 왼쪽 문자 반복검색)
+    </script>
+
+    <script>
+        var second = 4;
+        var decreaseSecond = setInterval(decrease, 1000);
+
+        function decrease(){
+            document.getElementById('second').innerHTML = second;
+            second -= 1;
+
+            if (second == 0){
+                clearInterval(decreaseSecond);
+            }
+        }
+
+        setTimeout(function(){
+            $('.alert').hide();
+        }, 5000)
+    </script>
+
+    <script>
+        var count = 0;
+        $('.badge').on('click', function(){
+            count += 1;
+            console.log(count);
+
+            if (count % 2 == 1) {
+                $('.badge').html('Light 🔄');
+            } else {
+                $('.badge').html('Dark 🔄');
+            }
+        });
+    </script>
+</body>
+
+</html>
