@@ -147,37 +147,41 @@
         // })
 
         // 동일한 기능의 자바스크립트
+        var now = 0;
         document.querySelector('.slide-1').addEventListener('click', function () {
             document.querySelector('.slide-container').style.transform = 'translateX(0vw)';
+            now = 0;
         })
 
         document.querySelector('.slide-2').addEventListener('click', function () {
             document.querySelector('.slide-container').style.transform = 'translateX(-100vw)';
+            now = 1;
         })
 
         document.querySelector('.slide-3').addEventListener('click', function () {
             document.querySelector('.slide-container').style.transform = 'translateX(-200vw)';
+            now = 2;
         })
 
         // 이전 버튼
         document.querySelector('.slide-previous').addEventListener('click', function () {
-            if (document.querySelector('.slide-container').style.transform == 'translateX(0vw)') {
-                // pass
-            } else if (document.querySelector('.slide-container').style.transform == 'translateX(-100vw)') {
-                document.querySelector('.slide-container').style.transform = 'translateX(0vw)';
+            if (now > 0) {
+                now--;
+                document.querySelector('.slide-container').style.transform = 'translateX(-' + now + '00vw)'
+                // console.log(now);
             } else {
-                document.querySelector('.slide-container').style.transform = 'translateX(-100vw)';
+                // console.log(now);
             }
         })
 
         // 다음 버튼
         document.querySelector('.slide-next').addEventListener('click', function () {
-            if (document.querySelector('.slide-container').style.transform == 'translateX(-200vw)') {
-                // pass
-            } else if (document.querySelector('.slide-container').style.transform == 'translateX(-100vw)') {
-                document.querySelector('.slide-container').style.transform = 'translateX(-200vw)';
+            if (now < 2) {
+                now++;
+                document.querySelector('.slide-container').style.transform = 'translateX(-' + now + '00vw)'
+                // console.log(now);
             } else {
-                document.querySelector('.slide-container').style.transform = 'translateX(-100vw)';
+                // console.log(now);
             }
         })
     </script>
