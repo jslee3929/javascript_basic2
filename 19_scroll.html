@@ -35,6 +35,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
+        <div class="progressbar"></div>
     </nav>
 
     <div class="list-container">
@@ -76,7 +77,8 @@
     <button class="slide-next">다음</button>
 
     <!-- overflow-y: scroll = 넘치는 글자를 스크롤바로 만들어줌 -->
-    <div class="lorem" style="width: 200px; height: 100px; overflow-y: scroll;">Lorem ipsum, dolor sit amet consectetur adipisicing
+    <div class="lorem" style="width: 200px; height: 100px; overflow-y: scroll;">Lorem ipsum, dolor sit amet consectetur
+        adipisicing
         elit. Sed vitae eaque blanditiis veniam dolorem, repellat explicabo. Doloribus veritatis aperiam, vero neque hic
         officiis numquam recusandae deleniti tempora fugiat accusantium delectus!</div>
 
@@ -127,63 +129,6 @@
     </script>
 
     <script>
-        // window(HTML Page)가 scroll 될 때마다 event 발생시켜주는 eventListener
-        // scroll 이벤트리스너는 보통 window에 부착함
-        // window > document > HTML
-        // window.addEventListener('scroll', function(){
-        //     // window.scrollY = 유저가 얼마나 스크롤을 했는지 출력 (가장 위 = 0)
-        //     console.log(window.scrollY);
-        //     // 동일한 기능 = window.pageYOffset
-        //     // 가로 스크롤 = window.scrollX
-
-        //     // window.scrollTo(x좌표, y좌표) = 강제로 스크롤하기
-        //     window.scrollTo(0, 100); // 스무스하게 스크롤된다면 그것은 Bootstrap 때문.
-
-        //     // 현재 위치부터 강제로 x, y만큼 스크롤하기
-        //     window.scrollBy(0, 100);
-        // })
-
-        // jQuery로 같은 기능 구현하기
-        // $(window).on('scroll', function(){
-        //     // .scrollTop() = 현재 스크롤바 위치 출력 (window.scrollY와 동일)
-        //     // .scrollTop(100) = 스크롤바 0, 100에 고정
-        //     $(window).scrollTop(100)
-        // })
-    </script>
-
-    <script>
-        // Q1. 스크롤바 100px 이상 내리면 로고 줄이기
-        window.addEventListener('scroll', function () {
-            if (window.scrollY < 100) {
-                var smallLogo = 30 - (0.1 * window.scrollY) + "px"
-                document.querySelector('.navbar-brand').style.fontSize = smallLogo;
-            } else if (window.scrollY >= 100) {
-                document.querySelector('.navbar-brand').style.fontSize = "20px";
-            }
-        })
-    </script>
-
-    <script>
-        // Q2. div의 스크롤바를 끝까지 내리면 alert 창 띄우기
-        // div 스크롤바 내린 양 + div height = div의 실제높이가 되었을 때 alert
-        document.querySelector('.lorem').addEventListener('scroll', function(){
-            // div를 스크롤한 양
-            // window는 scrollY지만 div는 scrollTop
-            var scrollAmount = document.querySelector('.lorem').scrollTop;
-            
-            // div의 눈에 보이는 실제 높이
-            var boxHeight = document.querySelector('.lorem').clientHeight;
-
-            // div의 실제 높이
-            var actualHeight = document.querySelector('.lorem').scrollHeight;
-
-            if (scrollAmount + boxHeight > actualHeight - 10) {
-                alert('알림')
-            }
-        })
-    </script>
-
-    <script>
         var count = 0;
         $('.badge').on('click', function () {
             count += 1;
@@ -226,6 +171,105 @@
                 now++;
                 document.querySelector('.slide-container').style.transform = 'translateX(-' + now + '00vw)'
             } else { }
+        })
+    </script>
+
+    <script>
+        // window(HTML Page)가 scroll 될 때마다 event 발생시켜주는 eventListener
+        // scroll 이벤트리스너는 보통 window에 부착함
+        // window > document > HTML
+        // window.addEventListener('scroll', function(){
+        //     // window.scrollY = 유저가 얼마나 스크롤을 했는지 출력 (가장 위 = 0)
+        //     console.log(window.scrollY);
+        //     // 동일한 기능 = window.pageYOffset
+        //     // 가로 스크롤 = window.scrollX
+
+        //     // window.scrollTo(x좌표, y좌표) = 강제로 스크롤하기
+        //     window.scrollTo(0, 100); // 스무스하게 스크롤된다면 그것은 Bootstrap 때문.
+
+        //     // 현재 위치부터 강제로 x, y만큼 스크롤하기
+        //     window.scrollBy(0, 100);
+        // })
+
+        // jQuery로 같은 기능 구현하기
+        // $(window).on('scroll', function(){
+        //     // .scrollTop() = 현재 스크롤바 위치 출력 (window.scrollY와 동일)
+        //     // .scrollTop(100) = 스크롤바 0, 100에 고정
+        //     $(window).scrollTop(100)
+        // })
+    </script>
+
+    <script>
+        // Q1. 스크롤바 100px 이상 내리면 로고 줄이기
+        let logoTimer;
+        window.addEventListener('scroll', function () {
+            if (!logoTimer) {
+                logoTimer = setTimeout(() => { // 쓰로틀링 (100ms에 한번씩만 검사)
+                    logoTimer = null;
+                    if (window.scrollY > 100) {
+                        document.querySelector('.navbar-brand').style.fontSize = '20px'
+                    } else {
+                        document.querySelector('.navbar-brand').style.fontSize = '30px'
+                    }
+                }, 100);
+            }
+        })
+
+        // 1. 스크롤 위치를 폰트 사이즈에 반영하도록 계산시키는 것보다 애니메이션 1번으로 퉁치는 게 성능상 나을듯
+        // 2. 쓰로틀링을 걸면 성능이 개선될듯
+    </script>
+
+    <script>
+        // Q2. div의 스크롤바를 끝까지 내리면 alert 창 띄우기
+        // div 스크롤바 내린 양 + div height = div의 실제높이가 되었을 때 alert
+        var boxTimer;
+        document.querySelector('.lorem').addEventListener('scroll', function () {
+            if (boxTimer) {
+                clearTimeout(boxTimer);
+            }
+            boxTimer = setTimeout(() => { // 디바운싱 (마지막 scroll 후 200ms가 지나면 이벤트 발생)
+                // div를 스크롤한 양
+                // window는 scrollY지만 div는 scrollTop
+                var boxScrollAmount = document.querySelector('.lorem').scrollTop;
+
+                // div의 눈에 보이는 높이
+                var boxHeight = document.querySelector('.lorem').clientHeight;
+
+                // div의 실제 높이
+                var boxActualHeight = document.querySelector('.lorem').scrollHeight;
+
+                if (boxScrollAmount + boxHeight > boxActualHeight - 10) {
+                    alert('박스 내용을 다 읽었습니다')
+                }
+            }, 200);
+        })
+
+    // 주의점
+    // 1. 스크롤 이벤트리스너 = 1초에 60번 이상 실행됨 = 컴퓨터한테 부담을 줄 수 있음 = 너무 많이 쓰면 안됨
+    // 2. 스크립트가 여러 번 중복으로 실행됨
+    </script>
+
+    <script>
+        // 전체 페이지 스크롤 체크
+        var htmlTimer; // 디바운싱
+
+        document.addEventListener('scroll', function () { // 쿼리셀렉터 안 써야 정상적으로 동작
+            if (!htmlTimer) {
+                htmlTimer = setTimeout(function () {
+                    htmlTimer = null;
+                    var htmlScrollAmount = document.documentElement.scrollTop; // .documentElement = .querySelector('html')
+                    var htmlHeight = document.documentElement.clientHeight;
+                    var htmlActualHeight = document.documentElement.scrollHeight;
+
+                    if (htmlScrollAmount + htmlHeight > htmlActualHeight - 100) {
+                        alert('전체 페이지 내용을 다 읽었습니다.')
+                    }
+
+                    // 페이지 내릴 때마다 페이지를 얼마나 읽었는지 진척도를 알려주는 UI (ProgressBar)
+                    var barLength = htmlScrollAmount / (htmlActualHeight - htmlHeight) * 100;
+                    document.querySelector('.progressbar').style.width = barLength + '%';
+                }, 200);
+            }
         })
     </script>
 </body>
