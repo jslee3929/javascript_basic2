@@ -9,6 +9,6 @@ function openTab(i) {
     tabContent.eq(i).addClass('show');
 }
 
-$('.list').click(function(e){
+$('.list').click(function (e) {
     openTab(Number(e.target.dataset.id))
 })
