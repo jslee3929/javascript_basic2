@@ -16,24 +16,24 @@
         <div class="card">
             <img src="https://via.placeholder.com/600">
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p>가격 : <span class="price">70000</span></p>
+                <h5>Card title</h5>
+                <p>가격 : <span>70000</span></p>
                 <button class="btn btn-danger">주문하기</button>
             </div>
         </div>
         <div class="card">
             <img src="https://via.placeholder.com/600">
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p>가격 : <span class="price">70000</span></p>
+                <h5>Card title</h5>
+                <p>가격 : <span>70000</span></p>
                 <button class="btn btn-danger">주문하기</button>
             </div>
         </div>
         <div class="card">
             <img src="https://via.placeholder.com/600">
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p>가격 : <span class="price">70000</span></p>
+                <h5>Card title</h5>
+                <p>가격 : <span>70000</span></p>
                 <button class="btn btn-danger">주문하기</button>
             </div>
         </div>
@@ -47,9 +47,15 @@
         ];
 
         for (let i = 0; i < 3; i++) {
-            document.querySelectorAll('.card-title')[i].innerHTML = products[i].title;
-            document.querySelectorAll('.price')[i].innerHTML = products[i].price;
+            // class 부여 안해도 css 셀렉터로 찾을 수 있음
+            document.querySelectorAll('.card-body h5')[i].innerHTML = products[i].title;
+            document.querySelectorAll('.card-body p span')[i].innerHTML = products[i].price;
         }
+
+        // 문자 중간에 변수 쉽게 넣기
+        // ''(작은따옴표) 대신 ``(백틱)을 사용해서 문자를 입력
+        var a = '안녕';
+        console.log(`문자${a}문자`); // 문자안녕문자
     </script>
 
     <!-- jQuery -->
