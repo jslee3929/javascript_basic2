@@ -75,16 +75,12 @@
         </select>
         <!-- 아래와 같이 짜면 확장성 부족 (사이즈가 상품마다 다를 수 있음) -->
         <!-- 상위 옵션 선택에 따라 select 태그 내부의 내용을 JS로 변경하는 것이 나음 -->
-        <select class="form-select mt-2 hide">
-            <option>95</option>
-            <option>100</option>
-            <option>105</option>
-        </select>
+        <select class="form-select mt-2 hide"></select>
     </form>
 
-    <div id="test">
+    <!-- <div id="test">
         <h4>반가워</h4>
-    </div>
+    </div> -->
 
     <div class="container mt-5">
         <ul class="list">
@@ -113,23 +109,6 @@
         crossorigin="anonymous"></script>
 
     <script>
-        var clothes = document.querySelectorAll('.form-select')[0]
-        var size = document.querySelectorAll('.form-select')[1]
-
-        clothes.addEventListener('input', function () {
-            if (this.value == '셔츠') {
-                size.classList.add('show');
-            }
-            else if (this.value == '바지') {
-                size.classList.add('show');
-            }
-            else {
-                size.classList.remove('show');
-            }
-        })
-    </script>
-
-    <script>
         // 자바스크립트로 HTML 생성법 1
         // var a = document.createElement('p'); // p태그 생성
         // a.innerHTML = '안녕'; // 내용 변경
@@ -137,12 +116,12 @@
         // document.querySelector('#test').appendChild(a); // id가 test인 요소 내에 a를 삽입
 
         // 자바스크립트로 HTML 생성법 2
-        var template = '<p>안녕</p>';
+        // var template = '<p>안녕</p>';
         // .insertAdjacentHTML = 요소 안에 문자형 HTML 넣어주는 함수
         // 'beforeend' = 안쪽 맨 밑에 HTML을 추가해라!
-        document.querySelector('#test').insertAdjacentHTML('beforeend', template)
+        // document.querySelector('#test').insertAdjacentHTML('beforeend', template)
         // jQuery 버전
-        $('#test').append(template);
+        // $('#test').append(template);
 
         // insertAdjacentHTML(JS), append(jQuery) = 추가해주는 함수
         // innerHTML = 기존 내용을 입력한 내용으로 대체하는 함수
@@ -150,7 +129,26 @@
         // createElement가 2배 정도 빠르나, 요즘 컴퓨터 성능에서는 큰 의미 없음
 
         // 바지를 선택하면 2번째 select 태그 내에 28, 30 등의 옵션이 등장하게 코딩
-        var template2 = '<option>28</option><option>30</option>'
+        // var template2 = '<option>28</option><option>30</option>'
+
+        var clothesForm = document.querySelectorAll('.form-select')[0]
+        var sizeForm = document.querySelectorAll('.form-select')[1]
+        var shirtSize = '<option>95</option><option>100</option><option>105</option>'
+        var pantsSize = '<option>28</option><option>30</option>'
+
+        clothesForm.addEventListener('input', function () {
+            if (this.value == '셔츠') {
+                sizeForm.innerHTML = shirtSize;
+                sizeForm.classList.add('show');
+            }
+            else if (this.value == '바지') {
+                sizeForm.innerHTML = pantsSize;
+                sizeForm.classList.add('show');
+            }
+            else {
+                sizeForm.classList.remove('show');
+            }
+        })
     </script>
 
     <script src="25_array, object2.js"></script>
