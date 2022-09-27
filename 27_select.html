@@ -123,8 +123,14 @@
         var clothes = document.querySelectorAll('.form-select')[0]
         var size = document.querySelectorAll('.form-select')[1]
         
-        clothes.addEventListener('change', function(){
-            if (clothes.options[clothes.selectedIndex].text == '셔츠') {
+        // 이벤트리스너 내에 input과 change 둘 중 어느 것을 써도 무방
+        clothes.addEventListener('input', function(){
+        // clothes.addEventListener('change', function(){
+            // 같은 기능 코드 4가지 있음
+            // 1. if (clothes.options[clothes.selectedIndex].text == '셔츠') {
+            // 2. if (clothes.value == '셔츠') {
+            // 3. if (e.currentTarget.value == '셔츠') { (이 경우 콜백 함수 안에 e 넣어야 함)
+            if (this.value == '셔츠') {
                 size.classList.add('show');
             }
             else {
