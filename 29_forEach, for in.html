@@ -49,7 +49,7 @@
             padding: 10px;
         }
 
-        .hide {
+        .form-hide {
             display: none;
         }
     </style>
@@ -69,14 +69,8 @@
             <option>셔츠</option>
             <option>바지</option>
         </select>
-        <!-- 아래와 같이 짜면 확장성 부족 (사이즈가 상품마다 다를 수 있음) -->
-        <!-- 상위 옵션 선택에 따라 select 태그 내부의 내용을 JS로 변경하는 것이 나음 -->
-        <select class="form-select mt-2 hide"></select>
+        <select class="form-select mt-2 form-hide"></select>
     </form>
-
-    <!-- <div id="test">
-        <h4>반가워</h4>
-    </div> -->
 
     <div class="container mt-5">
         <ul class="list">
@@ -105,51 +99,67 @@
         crossorigin="anonymous"></script>
 
     <script>
-        // 자바스크립트로 HTML 생성법 1
-        // var a = document.createElement('p'); // p태그 생성
-        // a.innerHTML = '안녕'; // 내용 변경
-        // a.classList.add() // p 태그에 클래스 부착
-        // document.querySelector('#test').appendChild(a); // id가 test인 요소 내에 a를 삽입
+        var pants = [28, 30, 32, 34];
+        var shirts = [90, 95, 100, 105, 110];
 
-        // 자바스크립트로 HTML 생성법 2
-        // var template = '<p>안녕</p>';
-        // .insertAdjacentHTML = 요소 안에 문자형 HTML 넣어주는 함수
-        // 'beforeend' = 안쪽 맨 밑에 HTML을 추가해라!
-        // document.querySelector('#test').insertAdjacentHTML('beforeend', template)
-        // jQuery 버전
-        // $('#test').append(template);
+        $('.form-select').eq(0).on('input', function () {
+            var value = this.value;
 
-        // insertAdjacentHTML(JS), append(jQuery) = 추가해주는 함수
-        // innerHTML = 기존 내용을 입력한 내용으로 대체하는 함수
+            if (value == '셔츠') {
+                $('.form-select').eq(1).removeClass('form-hide');
+                $('.form-select').eq(1).html('');
 
-        // createElement가 2배 정도 빠르나, 요즘 컴퓨터 성능에서는 큰 의미 없음
+                // shirts.forEach(function(data){
+                //     $('.form-select').eq(1).append(`<option>${data}</option>`)
+                // })
 
-        // 바지를 선택하면 2번째 select 태그 내에 28, 30 등의 옵션이 등장하게 코딩
-        // var template2 = '<option>28</option><option>30</option>'
-
-        var clothesForm = document.querySelectorAll('.form-select')[0]
-        var sizeForm = document.querySelectorAll('.form-select')[1]
-        // 변수 내에서 문자 개행하고 싶으면 '' 대신 ``(백틱) 사용
-        var shirtSize = `<option>95</option>
-        <option>100</option>
-        <option>105</option>`
-        var pantsSize = `<option>28</option>
-        <option>30</option>`
-
-        clothesForm.addEventListener('input', function () {
-            if (this.value == '셔츠') {
-                sizeForm.innerHTML = shirtSize;
-                sizeForm.classList.remove('hide');
+                // 화살표 함수 (arrow function) : function(data){} 대신 사용 가능
+                // (주의) 함수 내에 this를 쓸 경우 function(a){}와 (a) => {}의 this 뜻이 달라질 수 있음
+                // 화살표 함수 내의 this는 함수 밖에서 정의된 this를 그대로 가져와서 사용함
+                // function(){} 내의 this는 함수에 알맞게 재정의됨
+                // e.currentTarget을 this로 쓰고 싶으면 function(){}을 사용할 것
+                shirts.forEach((data) => {
+                    $('.form-select').eq(1).append(`<option>${data}</option>`)
+                })
             }
-            else if (this.value == '바지') {
-                sizeForm.innerHTML = pantsSize;
-                sizeForm.classList.remove('hide');
+            else if (value == '바지') {
+                $('.form-select').eq(1).removeClass('form-hide');
+                $('.form-select').eq(1).html('');
+
+                // pants 데이터 갯수만큼 <option> 생성해주세요
+                // 일반적인 for로 생성할 때의 예시문
+                // for (var i = 0; i < pants.length; i++){
+                //     option 태그 생성
+                // }
+
+                // forEach = 간단한 형태의 반복문 (array에 붙일 수 있음)
+                // (성능은 for이 빠르나 큰 차이는 없음)
+                // forEach 콜백함수에 파라미터 2개까지 작명 가능
+                // forEach 콜백함수의 1번째 파라미터 = array의 내용물 하나하나 (보통 item, data 등으로 작명)
+                // forEach 콜백함수의 2번째 파라미터 = 0부터 증가하는 정수
+                pants.forEach(function (data, i) {
+                    // console.log(123); // array 내의 갯수만큼 console.log를 반복
+                    // console.log(a);
+                    $('.form-select').eq(1).append(`<option>${data}</option>`)
+                });
             }
             else {
-                sizeForm.innerHTML = '';
-                sizeForm.classList.add('hide');
+                $('.form-select').eq(1).addClass('form-hide');
+                $('.form-select').eq(1).html('');
             }
         })
+
+        // for in 반복문 : object 자료 갯수만큼 반복문 돌리기
+        var obj = { name: 'kim', age: 20 }
+
+        for (var key in obj) {
+            console.log(key); // key값이 출력됨 (name, age)
+            console.log(obj[key]); // value값이 출력됨 (kim, 20)
+        }
+
+        // 반복문의 용도
+        // 1. 코드 반복
+        // 2. array, object 데이터 꺼내기
     </script>
 
     <script src="25_array, object2.js"></script>
