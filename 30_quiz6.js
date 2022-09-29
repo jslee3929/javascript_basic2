@@ -23,11 +23,11 @@ function findName(name) {
 // findName('명수') // (출력 X)
 
 // 2. 2단부터 9단까지 구구단 출력하기
-for (let i = 2; i < 10; i++) {
-    for (let j = 1; j < 10; j++) {
-        console.log(i * j);
-    }
-}
+// for (let i = 2; i < 10; i++) {
+//     for (let j = 1; j < 10; j++) {
+//         console.log(i * j);
+//     }
+// }
 
 // 3. 평균점수 계산기 만들기
 // 어떤 함수에 기존 모의고사 성적들을 array 자료에 전부 담아 첫 파라미터로 입력하고
@@ -35,3 +35,24 @@ for (let i = 2; i < 10; i++) {
 // 11월 성적이 기존 성적들의 평균에 비해 얼마나 우수한지 결과를 알려주는 함수
 // (입력예시) improvedScore([10, 20, 30, 40, 50], 40) = '평균보다 10점이 올랐네요'
 // (입력예시) improvedScore([40, 40, 40], 20) = '평균보다 20점이 떨어졌네요 재수추천'
+
+function improvedScore(array, currentScore){
+    var sumScore = 0;
+    var averageScore = 0;
+
+    array.forEach(function(data){
+        sumScore += data
+    })
+
+    averageScore = sumScore / array.length
+    
+    if (averageScore >= currentScore){
+        console.log(`평균보다 ${averageScore - currentScore}점이 떨어졌네요 재수추천`);
+    }
+    else {
+        console.log(`평균보다 ${currentScore - averageScore}점이 올랐네요`);
+    }
+}
+
+improvedScore([10, 20, 30, 40, 50], 40) // 평균보다 10점이 올랐네요
+improvedScore([40, 40, 40], 20) // 평균보다 20점이 떨어졌네요 재수추천
