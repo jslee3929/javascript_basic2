@@ -44,7 +44,7 @@
             { id: 1, price: 50000, title: 'Springfield Shirt' },
             { id: 2, price: 60000, title: 'Black Monastery' }
         ];
-
+        
         for (let i = 0; i < 3; i++) {
             document.querySelectorAll('.card-body h5')[i].innerHTML = products[i].title;
             document.querySelectorAll('.card-body p span')[i].innerHTML = products[i].price;
@@ -79,7 +79,7 @@
 
         // GET/POST 요청하면 브라우저 새로고침 됨
         // 새로고침이 싫으면 ajax 기능 이용 가능
-        // ajax = 새로고침 없이 GET/POST 요청하는 기능
+        // ajax = 새로고침 없이 GET/POST 요청하는 브라우저 기능
         // ex) 쇼핑몰의 상품 더보기 버튼
 
         // ajax로 GET 요청하는 법 (jQuery 이용해야 좀 더 쉬움)
@@ -114,10 +114,11 @@
         })
 
         // 브라우저 기본 함수 fetch 써도 ajax 가능 (아래는 GET 예시)
+        // (참고) fetch 함수는 Edge 브라우저 이상에서만 동작함
         fetch('https://codingapple1.github.io/price.json')
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            console.log(data); // {price: 5000}
         })
         .catch(error => {
             console.log(error);
@@ -125,6 +126,11 @@
         // (참고) 서버와 유저는 문자자료만 주고받을 수 있음 (Array, Object 불가능)
         // Object, Array 보내고 싶으면 따옴표 쳐서 문자처럼 만들어야 함
         // ex) "{"price" : 5000}"
+        // 이렇게 따옴표 친 자료를 JSON이라고 함
+        // JSON은 문자라서 원하는 자료 뽑아쓰기 어렵기 때문에 변환 과정을 거치는 것
+        // .then(res => res.json()) = JSON을 Object로 변환하는 코드
+        // $.get()은 JSON => Object 자동 변환해줌
+        // ajax를 편하게 쓰고 싶으면 axios 등의 라이브러리에서 사용
     </script>
 
     <!-- Bootstrap JS -->
