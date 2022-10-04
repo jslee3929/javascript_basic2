@@ -12,30 +12,28 @@
 
 <body>
     <div class="container">
-        <div class="row">
-
-            <!-- <div class="col-sm-4">
-                <img src="https://via.placeholder.com/600" class="w-100">
-                <h5>Card title</h5>
-                <p>가격 : 70000</p>
-            </div> -->
-
-        </div>
+        <div class="row"></div>
     </div>
 
     <script>
         // 자바스크립트를 이용해서 카드 레이아웃을 3개 생성하기
-        
+        var card = `<div class="col-sm-4">
+                <img src="https://via.placeholder.com/600" class="w-100">
+                <h5>Card title</h5>
+                <p>가격 : <span>70000</span></p>
+            </div>`
+
         var products = [
             { id: 0, price: 70000, title: 'Blossom Dress' },
             { id: 1, price: 50000, title: 'Springfield Shirt' },
             { id: 2, price: 60000, title: 'Black Monastery' }
         ];
 
-        // for (let i = 0; i < 3; i++) {
-        //     document.querySelectorAll('.card-body h5')[i].innerHTML = products[i].title;
-        //     document.querySelectorAll('.card-body p span')[i].innerHTML = products[i].price;
-        // }
+        for (let i = 0; i < 3; i++) {
+            document.querySelector('.row').insertAdjacentHTML('beforeend', card)
+            document.querySelectorAll('.col-sm-4 h5')[i].innerHTML = products[i].title;
+            document.querySelectorAll('.col-sm-4 p span')[i].innerHTML = products[i].price;
+        }
     </script>
 
     <!-- jQuery -->
