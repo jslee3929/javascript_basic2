@@ -32,6 +32,15 @@
     </div>
     <br>
     <div class="container">
+        <input>
+        <button class="btn btn-danger" id="filterbyinput">입력한 가격 이하 상품만 보기</button>
+    </div>
+    <br>
+    <div class="container">
+        <button class="btn btn-danger" id="original">처음으로 되돌리기</button>
+    </div>
+    <br>
+    <div class="container">
         <button class="btn btn-danger" id="more">더보기</button>
     </div>
 
@@ -64,17 +73,10 @@
             { id: 2, price: 60000, title: 'Black Monastery' }
         ];
 
-        setInformation(products)
+        // Array 복사
+        var originalProducts = products.slice();
 
-        $('#more').click('on', function () {
-            $.get(`https://codingapple1.github.io/js/more${count}.json`).done(function (data) {
-                setInformation(data)
-            })
-            count++;
-            if (count == 3) {
-                document.getElementById("more").style.display = 'none';
-            }
-        })
+        setInformation(products)
 
         // 낮은 가격부터 정렬
         $('#sortbyprice').click('on', function () {
@@ -130,8 +132,33 @@
         // sort()는 원본 변형 O
         // filter()는 원본 변형 X
 
-        // (응용2) input을 이용해 유저가 직접 가격을 입력해서 filter 하는 기능
+        // (응용2) input을 이용해 유저가 직접 가격을 입력해서 filter 하기
+        $('#filterbyinput').click('on', function () {
+            var inputPrice = document.querySelector('input').value; // javascript
+            // var inputPrice = $('input').val() // jQuery
+            var filteredProducts = products.filter(function (a) {
+                return a.price <= inputPrice
+            })
+            $('.row').html('');
+            setInformation(filteredProducts)
+        })
+        
         // (응용3) 원래 순서대로 되돌리기 버튼과 기능 만들기
+        $('#original').click('on', function(){
+            $('.row').html('');
+            setInformation(originalProducts)
+        })
+
+        // 더보기 버튼
+        $('#more').click('on', function () {
+            $.get(`https://codingapple1.github.io/js/more${count}.json`).done(function (data) {
+                setInformation(data)
+            })
+            count++;
+            if (count == 3) {
+                document.getElementById("more").style.display = 'none';
+            }
+        })
     </script>
 </body>
 
