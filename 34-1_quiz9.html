@@ -123,9 +123,14 @@
 
         // (숙제2) 6만원 이하 상품만 보기
         $('#filterbyprice').click('on', function () {
-            var filteredProducts = products.filter(function (a) {
-                return a.price <= 60000
-            })
+            // var filteredProducts = products.filter(function (a) {
+            //     return a.price <= 60000
+            // })
+            
+            // 화살표 함수 버전
+            // 함수에 파라미터가 1개면 function() 생략 가능
+            // 함수 {} 안에 return 한 줄 밖에 없으면 중괄호와 return 동시에 생략 가능
+            var filteredProducts = products.filter(a => a.price <= 60000);
             $('.row').html('');
             setInformation(filteredProducts)
         })
@@ -142,9 +147,9 @@
             $('.row').html('');
             setInformation(filteredProducts)
         })
-        
+
         // (응용3) 원래 순서대로 되돌리기 버튼과 기능 만들기
-        $('#original').click('on', function(){
+        $('#original').click('on', function () {
             $('.row').html('');
             setInformation(originalProducts)
         })
