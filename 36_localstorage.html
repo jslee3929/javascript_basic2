@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row"></div>
+    </div>
+
+    <div class="container">
+        <button class="btn btn-danger" id="sortbyprice">가격순 정렬</button>
+    </div>
+    <br>
+    <div class="container">
+        <button class="btn btn-danger" id="sortbyfirstname">상품명으로 정렬(가나다)</button>
+    </div>
+    <br>
+    <div class="container">
+        <button class="btn btn-danger" id="sortbylastname">상품명으로 정렬(다나가)</button>
+    </div>
+    <br>
+    <div class="container">
+        <button class="btn btn-danger" id="filterbyprice">6만원 이하 상품만 보기</button>
+    </div>
+    <br>
+    <div class="container">
+        <input>
+        <button class="btn btn-danger" id="filterbyinput">입력한 가격 이하 상품만 보기</button>
+    </div>
+    <br>
+    <div class="container">
+        <button class="btn btn-danger" id="original">처음으로 되돌리기</button>
+    </div>
+    <br>
+    <div class="container">
+        <button class="btn btn-danger" id="more">더보기</button>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+    <script>
+        function setInformation(object) {
+            object.forEach((data) => {
+                var card = `<div class="col-sm-4">
+                            <img src="https://via.placeholder.com/600" class="w-100">
+                            <h5>${data.title}</h5>
+                            <p>가격 : ${data.price}</p>
+                            <button class="buy">구매</button>
+                        </div>`;
+
+                $('.row').append(card)
+            })
+        }
+
+        var count = 1;
+        var products = [
+            { id: 0, price: 70000, title: 'Blossom Dress' },
+            { id: 1, price: 50000, title: 'Springfield Shirt' },
+            { id: 2, price: 60000, title: 'Black Monastery' }
+        ];
+
+        // Array 복사
+        var originalProducts = products.slice();
+        setInformation(products)
+
+        // 구매버튼 누르면 장바구니에 상품명 추가되는 기능 만들기
+        // 실제 서비스였다면 서버로 데이터를 전송해서 DB에 저장했을 것
+        // 그러나 지금은 서버가 없으므로 변수에 데이터를 저장할 것
+        // 변수의 단점 : 페이지를 새로고침 할 때마다 리셋됨 (영구저장 불가능)
+        // 반영구적으로 저장하기 위해 브라우저 내의 localstorage 이용
+        // localStorage, sessionStorage = 이름(key) : 값(value) 형태로 저장 가능
+        // IndexedDB = 구조화된 대용량데이터 저장시 이용
+        // Cookies = 로그인 정보 같은 유저의 인증 정보 저장 (서버 개발 시 주로 이용)
+        // Cache Storage = html css js 파일 저장하는 곳
+        // localStorage, sessionStorage 용량은 5MB, 문자/숫자만 저장 가능 (Array, Object 같은 건 못 집어넣음)
+        // localStorage = 사이트 재접속해도 유지, sessionStorage = 사이트 나가면 자동 삭제
+
+        // localStorage에 데이터 저장
+        localStorage.setItem('이름', 'kim')
+
+        // localStorage 데이터 출력
+        localStorage.getItem('이름')
+
+        // localStorage 데이터 삭제
+        localStorage.removeItem('이름')
+
+        // localStorage에 array, object 저장
+        // localStorage.setItem('num', [1,2,3]) // '1,2,3' (강제로 문자로 변환해줌)
+        // array/object => JSON으로 바꾸면 저장가능 (JSON = 문자 취급)
+        var arr = [1,2,3]
+        var newArr = JSON.stringify(arr);
+        localStorage.setItem('num', newArr) // '1,2,3' (강제로 문자로 변환해줌)
+
+        // localStorage에서 array, object 출력
+        var gotArr = localStorage.getItem('num')
+        console.log(gotArr); // [1,2,3] (문자)
+        console.log(gotArr[0]); // [ (첫번째 문자)
+        // JSON => array/object = JSON.parse()
+        var newGotArr = JSON.parse(gotArr)
+        console.log(newGotArr[0]); // 1
+        
+        // sessionStorage에 저장, 출력, 삭제 = 명령어를 sessionStorage로 바꾸면 됨
+
+        // localStorage 데이터 수정
+        // 1. 자료 꺼내서
+        // 2. 꺼낸 거 수정함
+        // 3. 다시 넣음
+
+        // (숙제1) 구매 버튼 누르면 누른 상품명 localStorage에 Array 형태로 저장하기
+        // 구매 버튼 누른 상품명을 Array 맨 뒤에 추가
+        // (팁1) 구매 버튼 누른 상품명(형제 요소, sibling) 찾는 법 구글에 검색하기
+        // (팁2) localStorage가 비어있을 때 / 데이터가 있을 때 저장 방식이 다름
+
+        // (숙제2) cart.html 방문시 localStorage에 저장된 상품명들 다 보여주기
+        // <div>장바구니페이지</div>
+        // <p>상품명1</p>
+        // <p>상품명2</p>
+        // <p>상품명3</p>
+
+        // 낮은 가격부터 정렬
+        $('#sortbyprice').click('on', function () {
+            products.sort(function (a, b) {
+                return a.price - b.price
+            });
+            $('.row').html('');
+            setInformation(products)
+        })
+
+        // (응용1) 상품명 가나다순 정렬
+        $('#sortbyfirstname').click('on', function () {
+            products.sort(function (a, b) {
+                if (a.title > b.title) {
+                    return 1
+                }
+                else if (a.title == b.title) {
+                    return 0
+                }
+                else {
+                    return -1
+                }
+            })
+            $('.row').html('');
+            setInformation(products)
+        })
+
+        // (숙제1) 상품명 다나가순 정렬
+        $('#sortbylastname').click('on', function () {
+            products.sort(function (a, b) {
+                if (a.title > b.title) {
+                    return -1
+                }
+                else if (a.title == b.title) {
+                    return 0
+                }
+                else {
+                    return 1
+                }
+            })
+            $('.row').html('');
+            setInformation(products)
+        })
+
+        // (숙제2) 6만원 이하 상품만 보기
+        $('#filterbyprice').click('on', function () {
+            // var filteredProducts = products.filter(function (a) {
+            //     return a.price <= 60000
+            // })
+            
+            // 화살표 함수 버전
+            var filteredProducts = products.filter(a => a.price <= 60000);
+            $('.row').html('');
+            setInformation(filteredProducts)
+        })
+        
+        // (응용2) input을 이용해 유저가 직접 가격을 입력해서 filter 하기
+        $('#filterbyinput').click('on', function () {
+            var inputPrice = document.querySelector('input').value; // javascript
+            // var inputPrice = $('input').val() // jQuery
+            var filteredProducts = products.filter(function (a) {
+                return a.price <= inputPrice
+            })
+            $('.row').html('');
+            setInformation(filteredProducts)
+        })
+
+        // (응용3) 원래 순서대로 되돌리기 버튼과 기능 만들기
+        $('#original').click('on', function () {
+            $('.row').html('');
+            setInformation(originalProducts)
+        })
+
+        // 더보기 버튼
+        $('#more').click('on', function () {
+            $.get(`https://codingapple1.github.io/js/more${count}.json`).done(function (data) {
+                setInformation(data)
+            })
+            count++;
+            if (count == 3) {
+                document.getElementById("more").style.display = 'none';
+            }
+        })
+    </script>
+</body>
+
+</html>
