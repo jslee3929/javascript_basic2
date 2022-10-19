@@ -141,7 +141,7 @@
                     // localStorage에 저장
                     localStorage.setItem('cart', cart)
                 }
-                else {
+                else { // 데이터가 있을 경우
                     var name = buyButton[i].previousSibling.previousSibling.previousSibling.previousSibling.innerHTML
                     productsArray.push(name)
                     var cart = JSON.stringify(productsArray)
@@ -149,7 +149,6 @@
                 }
             })
         }
-
 
         // (팁1) 구매 버튼 누른 상품명(형제 요소, sibling) 찾는 법 구글에 검색하기
         // (팁2) localStorage가 비어있을 때 / 데이터가 있을 때 저장 방식이 다름
