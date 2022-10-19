@@ -122,15 +122,34 @@
         // 3. 다시 넣음
 
         // (숙제1) 구매 버튼 누르면 누른 상품명 localStorage에 Array 형태로 저장하기
+        var productsArray = []
+        var productsLength = Object.keys(products).length
         // 구매 버튼 누른 상품명을 Array 맨 뒤에 추가
-        var name = ''
-        for (let i = 0; i < 3; i++) {
-            var buyButton = document.querySelectorAll('buy')[i]
-            buyButton.addEventListener('click', function () {
-                name = buyButton.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML
-                localStorage.setItem('name', name)
+        for (let i = 0; i < productsLength; i++) {
+            var buyButton = document.querySelectorAll('.buy')
+            // 해당 상품의 구매 버튼 누르면
+            buyButton[i].addEventListener('click', function () {
+                // localStorage에 담긴 상품이 없을 때
+                if (localStorage.getItem('cart') == null) {
+                    productsArray = []
+                    // 이름을 찾아서 (형제 요소 찾기)
+                    var name = buyButton[i].previousSibling.previousSibling.previousSibling.previousSibling.innerHTML
+                    // Array에 추가
+                    productsArray.push(name)
+                    // JSON으로 변환 후
+                    var cart = JSON.stringify(productsArray)
+                    // localStorage에 저장
+                    localStorage.setItem('cart', cart)
+                }
+                else {
+                    var name = buyButton[i].previousSibling.previousSibling.previousSibling.previousSibling.innerHTML
+                    productsArray.push(name)
+                    var cart = JSON.stringify(productsArray)
+                    localStorage.setItem('cart', cart)
+                }
             })
         }
+
 
         // (팁1) 구매 버튼 누른 상품명(형제 요소, sibling) 찾는 법 구글에 검색하기
         // (팁2) localStorage가 비어있을 때 / 데이터가 있을 때 저장 방식이 다름
