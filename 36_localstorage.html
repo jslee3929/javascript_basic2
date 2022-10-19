@@ -91,29 +91,29 @@
         // localStorage = 사이트 재접속해도 유지, sessionStorage = 사이트 나가면 자동 삭제
 
         // localStorage에 데이터 저장
-        localStorage.setItem('이름', 'kim')
+        // localStorage.setItem('이름', 'kim')
 
         // localStorage 데이터 출력
-        localStorage.getItem('이름')
+        // localStorage.getItem('이름')
 
         // localStorage 데이터 삭제
-        localStorage.removeItem('이름')
+        // localStorage.removeItem('이름')
 
         // localStorage에 array, object 저장
         // localStorage.setItem('num', [1,2,3]) // '1,2,3' (강제로 문자로 변환해줌)
         // array/object => JSON으로 바꾸면 저장가능 (JSON = 문자 취급)
-        var arr = [1,2,3]
-        var newArr = JSON.stringify(arr);
-        localStorage.setItem('num', newArr) // '1,2,3' (강제로 문자로 변환해줌)
+        // var arr = [1, 2, 3]
+        // var newArr = JSON.stringify(arr);
+        // localStorage.setItem('num', newArr) // '1,2,3' (강제로 문자로 변환해줌)
 
         // localStorage에서 array, object 출력
-        var gotArr = localStorage.getItem('num')
-        console.log(gotArr); // [1,2,3] (문자)
-        console.log(gotArr[0]); // [ (첫번째 문자)
+        // var gotArr = localStorage.getItem('num')
+        // console.log(gotArr); // [1,2,3] (문자)
+        // console.log(gotArr[0]); // [ (첫번째 문자)
         // JSON => array/object = JSON.parse()
-        var newGotArr = JSON.parse(gotArr)
-        console.log(newGotArr[0]); // 1
-        
+        // var newGotArr = JSON.parse(gotArr)
+        // console.log(newGotArr[0]); // 1
+
         // sessionStorage에 저장, 출력, 삭제 = 명령어를 sessionStorage로 바꾸면 됨
 
         // localStorage 데이터 수정
@@ -123,6 +123,15 @@
 
         // (숙제1) 구매 버튼 누르면 누른 상품명 localStorage에 Array 형태로 저장하기
         // 구매 버튼 누른 상품명을 Array 맨 뒤에 추가
+        var name = ''
+        for (let i = 0; i < 3; i++) {
+            var buyButton = document.querySelectorAll('buy')[i]
+            buyButton.addEventListener('click', function () {
+                name = buyButton.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML
+                localStorage.setItem('name', name)
+            })
+        }
+
         // (팁1) 구매 버튼 누른 상품명(형제 요소, sibling) 찾는 법 구글에 검색하기
         // (팁2) localStorage가 비어있을 때 / 데이터가 있을 때 저장 방식이 다름
 
@@ -180,13 +189,13 @@
             // var filteredProducts = products.filter(function (a) {
             //     return a.price <= 60000
             // })
-            
+
             // 화살표 함수 버전
             var filteredProducts = products.filter(a => a.price <= 60000);
             $('.row').html('');
             setInformation(filteredProducts)
         })
-        
+
         // (응용2) input을 이용해 유저가 직접 가격을 입력해서 filter 하기
         $('#filterbyinput').click('on', function () {
             var inputPrice = document.querySelector('input').value; // javascript
