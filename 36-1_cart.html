@@ -16,6 +16,12 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     
     <script>
+        // (숙제2) cart.html 방문시 localStorage에 저장된 상품명들 다 보여주기
+        // <div>장바구니페이지</div>
+        // <p>상품명1</p>
+        // <p>상품명2</p>
+        // <p>상품명3</p>
+        
         var cart = localStorage.getItem('cart')
         var newCart = JSON.parse(cart)
         console.log(newCart)
