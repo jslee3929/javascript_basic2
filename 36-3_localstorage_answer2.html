@@ -78,30 +78,30 @@
         var originalProducts = products.slice();
         setInformation(products)
 
-        // (숙제1) 구매 버튼 누르면 누른 상품명 localStorage에 Array 형태로 저장하기
-        $('.buy').click(function (e) { // jQuery는 querySelectorAll에 알아서 각각 이벤트리스너 붙음 (쌩자바스크립트는 각각 붙여줘야 함)
-            var title = $(e.target).siblings('h5').text(); // e.target의 형제 요소 중 h5를 찾아줌
-            // 자바스크립트 버전 = e.target.previousElementSibling.previousElementSibling
+        // 구매 버튼 누르면 누른 상품명 localStorage에 저장하기
+        $('.buy').click(function (e) {
+            var title = $(e.target).siblings('h5').text();
             if (localStorage.getItem('cart') != null) {
-                var cartItem = JSON.parse(localStorage.cart) // localStorage.cart = localStorage.getItem('cart')
-                // (응용1) Array 내의 중복 제거
+                var cartItem = JSON.parse(localStorage.cart) // [{ '상품명': 어쩌구, '수량': 1 }]
+                // (응용2) 상품 수량 저장 [{상품명:'A',수량:2},{상품명:'B',수량:2}]
+                // 모든 상품 검사
                 for (var i = 0; i < cartItem.length; i++) {
-                    const currentElem = cartItem[i]
-
-                    for (let j = i + 1; j < cartItem.length; j++) {
-                        if (currentElem === cartItem[j]) {
-                            console.log('중복이 있습니다.')
-                            break
-                        }
+                    // 만약 object 내에 같은 요소가 있으면
+                    if (title == cartItem[i].name) {
+                        // 수량 += 1
+                        cartItem[i].quantity += 1;
+                    }
+                    // 만약 object 내에 같은 요소가 없으면
+                    else {
+                        // object 추가
+                        cartItem.push({ name: title, quantity: 1 });
+                        break
                     }
                 }
-
-                cartItem.push(title);
                 localStorage.setItem('cart', JSON.stringify(cartItem))
-                // (응용2) 상품 수량 저장 [{상품명:'A',수량:2},{상품명:'B',수량:2}]
             }
             else {
-                localStorage.setItem('cart', JSON.stringify([title])) // localStorage 카트의 내용을 [title]로 수정
+                localStorage.setItem('cart', JSON.stringify([{ name: title, quantity: 1 }]))
             }
         })
 
