@@ -81,23 +81,29 @@
         // 구매 버튼 누르면 누른 상품명 localStorage에 저장하기
         $('.buy').click(function (e) {
             var title = $(e.target).siblings('h5').text();
+            // cart에 요소가 존재하면
             if (localStorage.getItem('cart') != null) {
+                var itemAdded = false
+                // cart의 요소 가져오기
                 var cartItem = JSON.parse(localStorage.cart) // [{ '상품명': 어쩌구, '수량': 1 }]
-                // (응용2) 상품 수량 저장 [{상품명:'A',수량:2},{상품명:'B',수량:2}]
+                // 상품 수량 저장 [{상품명:'A',수량:2},{상품명:'B',수량:2}]
                 // 모든 상품 검사
                 for (var i = 0; i < cartItem.length; i++) {
                     // 만약 object 내에 같은 요소가 있으면
                     if (title == cartItem[i].name) {
                         // 수량 += 1
                         cartItem[i].quantity += 1;
-                    }
-                    // 만약 object 내에 같은 요소가 없으면
-                    else {
-                        // object 추가
-                        cartItem.push({ name: title, quantity: 1 });
+                        itemAdded = true
                         break
                     }
                 }
+
+                if (itemAdded == false) {
+                    // 만약 object 내에 같은 요소가 없으면 object 추가
+                    cartItem.push({ name: title, quantity: 1 });
+                }
+
+                // localStorage에 cart 저장
                 localStorage.setItem('cart', JSON.stringify(cartItem))
             }
             else {
