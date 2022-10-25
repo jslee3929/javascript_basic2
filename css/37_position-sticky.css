@@ -1,0 +1,23 @@
+.grey {
+    background: lightgrey;
+    height: 2000px;
+    margin-top: 500px;
+}
+
+.image {
+    float: right;
+    width: 400px;
+    /* position: sticky와 fixed는 유사 */
+    /* sticky는 조건부 fixed */
+    /* 스크롤 중 요소를 만났을 때 고정 */
+    /* 스크롤이 부모 div를 넘어갈 때 해제 */
+    /* (주의1) 스크롤 할 부모 박스 필요 */
+    /* (주의2) top 등 좌표속성과 함께 써야 제대로 보임 */
+    position: sticky;
+    top: 100px;
+}
+
+.text{
+    float: left;
+    width: 300px;
+}
