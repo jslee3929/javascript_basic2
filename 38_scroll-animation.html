@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/38_scroll-animation.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="card-background">
+        <div class="card-box">
+            <img src="card1.png">
+        </div>
+        <div class="card-box">
+            <img src="card2.png">
+        </div>
+        <div class="card-box">
+            <img src="card3.png">
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script>
+        $(window).scroll(function(){
+            var height = $(window).scrollTop();
+            console.log(height); // 현재 높이 출력
+            // 650px에서 1150px까지 스크롤바를 내리면 첫째 카드의 opacity 1~0으로 서서히 변경
+            var y = (-1/500) * height + 115/50 // 650px ~ 1150px 스크롤 될 때 1~0의 값을 가지는 변수
+            $('.card-box').eq(0).css('opacity', y) // 0번째 card-box의 opacity를 y로 변경
+
+            // (숙제) 카드가 0.9배로 작아지는 것 구현 (transform의 scale 속성 이용)
+            var z = (-1/5000) * height + 1.13
+            $('.card-box').eq(0).css('transform', `scale(${z})`)
+        });
+    </script>
+</body>
+
+</html>

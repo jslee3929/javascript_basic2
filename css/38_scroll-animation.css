@@ -1,0 +1,20 @@
+.card-background {
+    height: 3000px;
+    margin-top: 800px;
+    margin-bottom: 1600px;
+}
+
+.card-box img {
+    display: block;
+    margin: auto;
+    max-width: 80%;
+}
+
+.card-box {
+    /* position: sticky로 위에서 400px 위치에 카드 붙여버리기 */
+    position: sticky;
+    top: 400px;
+    margin-top: 200px;
+    /* 부드러운 동작을 위해 추가 */
+    transition : all 0.2s
+}
