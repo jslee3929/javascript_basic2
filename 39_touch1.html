@@ -134,20 +134,6 @@
     </script>
 
     <script>
-        // $('.slide-1').on('click', function(){
-        //     // jQuery에서 .css를 이용하면 style 속성을 바꿀 수 있음
-        //     $('.slide-container').css('transform', 'translateX(0vw)');
-        // })
-
-        // $('.slide-2').on('click', function(){
-        //     $('.slide-container').css('transform', 'translateX(-100vw)');
-        // })
-
-        // $('.slide-3').on('click', function(){
-        //     $('.slide-container').css('transform', 'translateX(-200vw)');
-        // })
-
-        // 동일한 기능의 자바스크립트
         var now = 0;
         document.querySelector('.slide-1').addEventListener('click', function () {
             document.querySelector('.slide-container').style.transform = 'translateX(0vw)';
@@ -169,9 +155,6 @@
             if (now > 0) {
                 now--;
                 document.querySelector('.slide-container').style.transform = 'translateX(-' + now + '00vw)'
-                // console.log(now);
-            } else {
-                // console.log(now);
             }
         })
 
@@ -180,9 +163,6 @@
             if (now < 2) {
                 now++;
                 document.querySelector('.slide-container').style.transform = 'translateX(-' + now + '00vw)'
-                // console.log(now);
-            } else {
-                // console.log(now);
             }
         })
 
@@ -192,28 +172,38 @@
         // 2. mouseup : 마우스를 뗐을 때 발동하는 이벤트
         // (click = mousedown + mouseup)
         // 3. mousemove : 마우스를 움직일 때 발동하는 이벤트
-        
+
         var startX = 0 // 전역변수 선언
         var mousePush = false
-        $('.slide-box').eq(0).on('mousedown', function(e){
+        $('.slide-box').eq(0).on('mousedown', function (e) {
+            document.querySelector('.slide-container').style.transition = ''; // 민첩한 드래그를 위해 transition 삭제
             // console.log(e.clientX) // e.clientX = 현재 마우스 X 좌표
             startX = e.clientX // 모든 변수는 범위가 function임. 그러므로 startX를 함수 안에서 선언하면 다른 함수에서 갖다쓸 수 없음
             mousePush = true
         })
 
-        $('.slide-box').eq(0).on('mousemove', function(e){
+        $('.slide-box').eq(0).on('mousemove', function (e) {
             // console.log(e.clientX - startX)
-            if (mousePush == true){
+            if (mousePush == true) {
                 $('.slide-container').css('transform', `translateX(${e.clientX - startX}px)`)
             }
         })
 
-        $('.slide-box').eq(0).on('mouseup', function(e){
-            mousePush = false
-        })
-
         // (기능2) 드래그로 100px 이상 이동시 사진 이동
         // 서서히 이동 = transition
+        $('.slide-box').eq(0).on('mouseup', function (e) {
+            mousePush = false
+            if (e.clientX - startX < -100) {
+                document.querySelector('.slide-container').style.transition = 'all 1s';
+                document.querySelector('.slide-container').style.transform = 'translateX(-100vw)';
+                now = 1;
+            }
+            else {
+                document.querySelector('.slide-container').style.transition = 'all 1s';
+                document.querySelector('.slide-container').style.transform = 'translateX(0vw)';
+                now = 0;
+            }
+        })
     </script>
 </body>
 
