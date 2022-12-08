@@ -246,6 +246,31 @@
         // 3. 스와이프, pinch, rotate 이벤트리스너도 제공
 
         // (응용1) 나머지 2번 3번 사진도 스와이프 가능하게 만들어봅시다.
+        $('.slide-box').eq(1).on('mousedown', function (e) {
+            document.querySelector('.slide-container').style.transition = '';
+            startX = e.clientX
+            mousePush = true
+        })
+
+        $('.slide-box').eq(1).on('mousemove', function (e) {
+            if (mousePush == true) {
+                $('.slide-container').css('transform', `translateX(calc(-100vw + ${e.clientX - startX}px))`)
+            }
+        })
+
+        $('.slide-box').eq(1).on('mouseup', function (e) {
+            mousePush = false
+            if (e.clientX - startX < -100) {
+                document.querySelector('.slide-container').style.transition = 'all 1s';
+                document.querySelector('.slide-container').style.transform = 'translateX(-200vw)';
+                now = 2;
+            }
+            else {
+                document.querySelector('.slide-container').style.transition = 'all 1s';
+                document.querySelector('.slide-container').style.transform = 'translateX(-100vw)';
+                now = 1;
+            }
+        })
         // (응용2) 첫 사진을 우측으로 스와이프 못하게 막으려면? 아마 if문 추가하면 될 수도 있겠군요
         // (응용3) 제 코드만 따라쳤다면 싹 지우고 1주 후에 가물가물할 때 답보지 말고 직접 만들어봅시다.
     </script>
