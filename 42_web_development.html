@@ -40,55 +40,37 @@
         <div class="p-1 m-2">
             <input type="text" placeholder="검색어입력">
         </div>
-        <div class="d-flex flex-row justify-content-between p-1">
-            <div class="card m-2 border-0 rounded-0" style="width: 100%;">
-                <img src="pr1.jpg" class="card-img-top rounded-0" alt="...">
-                <div class="card-body rounded-0">
-                    <h5 class="card-title fw-bold">식기세척기</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">세척나라</h6>
-                    <p class="card-text fs-5">가격 : 10000</p>
-                    <a href="#" class="btn btn-dark">담기</a>
-                </div>
-            </div>
-            <div class="card m-2 border-0 rounded-0" style="width: 100%;">
-                <img src="pr2.jpg" class="card-img-top rounded-0" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">원목 침대 프레임</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">침대나라</h6>
-                    <p class="card-text fs-5">가격 : 20000</p>
-                    <a href="#" class="btn btn-dark">담기</a>
-                </div>
-            </div>
-            <div class="card m-2 border-0 rounded-0" style="width: 100%;">
-                <img src="pr3.jpg" class="card-img-top rounded-0" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">천연 디퓨저 세트</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">향기나라</h6>
-                    <p class="card-text fs-5">가격 : 30000</p>
-                    <a href="#" class="btn btn-dark">담기</a>
-                </div>
-            </div>
-            <div class="card m-2 border-0 rounded-0" style="width: 100%;">
-                <img src="pr4.jpg" class="card-img-top rounded-0" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">시원한 서큘레이터</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">바람나라</h6>
-                    <p class="card-text fs-5">가격 : 40000</p>
-                    <a href="#" class="btn btn-dark">담기</a>
-                </div>
-            </div>
-        </div>
+        <div class="d-flex flex-row justify-content-between p-1" id="card-box"></div>
 
         <!-- Cart -->
         <div class="container p-3" style="background-color:#e2e2e2;">
             <div class="fs-4 fw-bold mb-2">장바구니</div>
-            <div class="bg-black d-flex align-items-center justify-content-center text-white fs-5 fw-bold" style="height: 250px">여기로 드래그</div>
+            <div class="bg-black d-flex align-items-center justify-content-center text-white fs-5 fw-bold"
+                style="height: 250px">여기로 드래그</div>
         </div>
     </div>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script>
+        $.get('store.json').done(function (data) {
+            for (let i = 0; i < Object.keys(data.products).length; i++) {
+                var cardTemplate = `<div class="card m-2 border-0 rounded-0" style="width: 100%;">
+                <img src=${data.products[i].photo} class="card-img-top rounded-0" alt="...">
+                <div class="card-body rounded-0">
+                    <h5 class="card-title fw-bold">${data.products[i].title}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">${data.products[i].brand}</h6>
+                    <p class="card-text fs-5">가격 : ${data.products[i].price}</p>
+                    <a href="#" class="btn btn-dark">담기</a>
+                </div>
+                </div>`
+                $('#card-box').append(cardTemplate);
+            }
+
+        })
+    </script>
 </body>
 
 </html>
