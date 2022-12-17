@@ -40,7 +40,12 @@
         <div class="p-1 m-2">
             <input type="text" placeholder="검색어입력" id="search">
         </div>
-        <div class="d-flex flex-row justify-content-between p-1" id="card-box"></div>
+        <div class="row p-1" id="card-box">
+            <div class="col-3"></div>
+            <div class="col-3"></div>
+            <div class="col-3"></div>
+            <div class="col-3"></div>
+        </div>
 
         <!-- Cart -->
         <div class="container p-3" style="background-color:#e2e2e2;">
@@ -56,32 +61,53 @@
 
     <script>
         // store.json의 내용을 card-box에 추가
+        var productsName = []
         $.get('store.json').done(function (data) {
             for (let i = 0; i < Object.keys(data.products).length; i++) {
+                productsName[i] = data.products[i].title
                 var cardTemplate = `<div class="card m-2 border-0 rounded-0" style="width: 100%;">
-                <img src=${data.products[i].photo} class="card-img-top rounded-0" alt="...">
-                <div class="card-body rounded-0">
-                    <h5 class="card-title fw-bold">${data.products[i].title}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">${data.products[i].brand}</h6>
-                    <p class="card-text fs-5">가격 : ${data.products[i].price}</p>
-                    <a href="#" class="btn btn-dark">담기</a>
-                </div>
+                    <img src=${data.products[i].photo} class="card-img-top rounded-0" alt="...">
+                    <div class="card-body rounded-0">
+                        <h5 class="card-title fw-bold">${data.products[i].title}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">${data.products[i].brand}</h6>
+                        <p class="card-text fs-5">가격 : ${data.products[i].price}</p>
+                        <a href="#" class="btn btn-dark">담기</a>
+                    </div>
                 </div>`
-                $('#card-box').append(cardTemplate);
+                $('.col-3').eq(i).append(cardTemplate);
             }
         })
 
-        // 1. input에 입력값이 들어오면
-        // 2. card-box의 내용물을 싹 비우고
-        // 3. input의 value를 딴 뒤
-        // 4. store.json - products.title들과 비교 (for문 사용)
-        // 5. 일치하는 애들만 card-box에 박아넣기
-        // 6. title 중 일치하는 부분을 형광펜 표시
         var search = document.getElementById('search')
-        search.addEventListener('input', function(){
-            console.log(search.value);
+        search.addEventListener('input', function () { // input에 입력값이 들어오면
+            $('#card-box').html(`<div class="col-3"></div><div class="col-3"></div><div class="col-3"></div><div class="col-3"></div>`); // card-box의 내용물을 싹 비우고
+            var searchResultIndex = []
+            for (let i = 0; i < productsName.length; i++) {
+                if (productsName[i].includes(search.value)) { // input의 value를 store.json의 products.title과 비교
+                    searchResultIndex.push(i); // 일치하는 검색 결과의 index를 searchResultIndex 배열에 추가
+                }
+            }
+
+            var j = 0;
+            $.get('store.json').done(function (data) {
+                for (let i = 0; i < searchResultIndex.length; i++) {
+                    // searchResultIndex 배열에 있는 index의 템플릿 생성
+                    var cardTemplate = `<div class="card m-2 border-0 rounded-0" style="width: 100%;">
+                        <img src=${data.products[searchResultIndex[i]].photo} class="card-img-top rounded-0" alt="...">
+                        <div class="card-body rounded-0">
+                            <h5 class="card-title fw-bold">${data.products[searchResultIndex[i]].title}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">${data.products[searchResultIndex[i]].brand}</h6>
+                            <p class="card-text fs-5">가격 : ${data.products[searchResultIndex[i]].price}</p>
+                            <a href="#" class="btn btn-dark">담기</a>
+                        </div>
+                    </div>`
+                    $('.col-3').eq(j).append(cardTemplate); // 생성한 템플릿을 html에 삽입
+                    j++;
+                }
+            })
+            // title 중 일치하는 부분을 형광펜 표시
         })
-        
+
     </script>
 </body>
 
