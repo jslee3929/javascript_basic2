@@ -78,17 +78,18 @@
             }
         })
 
-        var search = document.getElementById('search')
-        search.addEventListener('input', function () { // input에 입력값이 들어오면
+        var searchBox = document.getElementById('search')
+        searchBox.addEventListener('input', function () { // input에 입력값이 들어오면
             $('#card-box').html(`<div class="col-3"></div><div class="col-3"></div><div class="col-3"></div><div class="col-3"></div>`); // card-box의 내용물을 싹 비우고
             var searchResultIndex = []
             for (let i = 0; i < productsName.length; i++) {
-                if (productsName[i].includes(search.value)) { // input의 value를 store.json의 products.title과 비교
+                if (productsName[i].includes(searchBox.value)) { // input의 value를 store.json의 products.title과 비교
                     searchResultIndex.push(i); // 일치하는 검색 결과의 index를 searchResultIndex 배열에 추가
                 }
             }
 
             var j = 0;
+            var searchLength = searchBox.value.length
             $.get('store.json').done(function (data) {
                 for (let i = 0; i < searchResultIndex.length; i++) {
                     // searchResultIndex 배열에 있는 index의 템플릿 생성
@@ -101,11 +102,17 @@
                             <a href="#" class="btn btn-dark">담기</a>
                         </div>
                     </div>`
-                    $('.col-3').eq(j).append(cardTemplate); // 생성한 템플릿을 html에 삽입
+                    // title 중 일치하는 부분을 형광펜 표시
+                    // cardTemplate의 제목 부분에서 검색어가 시작되는 index를 찾음
+                    var highlightIndex = data.products[searchResultIndex[i]].title.indexOf(searchBox.value)
+                    // 검색어 부분을 찾아서 하이라이트
+                    var highlightText = `<span style="background: yellow">${data.products[searchResultIndex[i]].title.substr(highlightIndex, searchLength)}</span>`
+                    // 해당 index에서 searchLength만큼의 문자열을 하이라이트된 문자열로 replace
+                    var highlightedCardTemplate = cardTemplate.replace(searchBox.value, highlightText)
+                    $('.col-3').eq(j).append(highlightedCardTemplate); // 생성한 템플릿을 html에 삽입
                     j++;
                 }
             })
-            // title 중 일치하는 부분을 형광펜 표시
         })
 
     </script>
