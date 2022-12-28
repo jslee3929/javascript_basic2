@@ -50,8 +50,8 @@
         <!-- Cart -->
         <div class="container p-3" style="background-color:#e2e2e2;">
             <div class="fs-4 fw-bold mb-2">장바구니</div>
-            <div class="bg-black d-flex align-items-center justify-content-center text-white fs-5 fw-bold"
-                style="height: 250px">여기로 드래그</div>
+            <div class="bg-black d-flex align-items-center justify-content-center text-white fs-5 fw-bold" id="cart"
+                style="height: 500px">여기로 드래그</div>
         </div>
     </div>
 
@@ -65,7 +65,7 @@
         $.get('store.json').done(function (data) {
             for (let i = 0; i < Object.keys(data.products).length; i++) {
                 productsName[i] = data.products[i].title
-                var cardTemplate = `<div class="card m-2 border-0 rounded-0" style="width: 100%;">
+                var cardTemplate = `<div class="card m-2 border-0 rounded-0" draggable="true" style="width: 100%;">
                     <img src=${data.products[i].photo} class="card-img-top rounded-0" alt="...">
                     <div class="card-body rounded-0">
                         <h5 class="card-title fw-bold">${data.products[i].title}</h5>
@@ -93,7 +93,7 @@
             $.get('store.json').done(function (data) {
                 for (let i = 0; i < searchResultIndex.length; i++) {
                     // searchResultIndex 배열에 있는 index의 템플릿 생성
-                    var cardTemplate = `<div class="card m-2 border-0 rounded-0" style="width: 100%;">
+                    var cardTemplate = `<div class="card m-2 border-0 rounded-0" draggable="true" style="width: 100%;">
                         <img src=${data.products[searchResultIndex[i]].photo} class="card-img-top rounded-0" alt="...">
                         <div class="card-body rounded-0">
                             <h5 class="card-title fw-bold">${data.products[searchResultIndex[i]].title}</h5>
@@ -114,6 +114,30 @@
                 }
             })
         })
+
+        // 상품 카드 드래그 시작하면
+        document.getElementById('cart').addEventListener('dragstart', function (e) {
+            e.preventDefault();
+            // 카드의 정보를 setData에 저장
+            // e.dataTransfer.setData('index', '저장할데이터')
+        })
+
+        document.getElementById('cart').addEventListener('dragover', function (e) {
+            e.preventDefault();
+        })
+
+        // 상품 카드를 cart 박스 안에 놓으면
+        document.getElementById('cart').addEventListener('drop', function (e) {
+            e.preventDefault();
+            // if 같은 종류 상품이 없다면
+            // 검은 영역 안에 카드 생성
+            // else 상품의 수량 + 1
+        })
+
+        // 담기 버튼 누르면
+        // if 같은 종류 상품이 없다면
+        // 검은 영역 안에 카드 생성
+        // else 상품의 수량 + 1
 
     </script>
 </body>
