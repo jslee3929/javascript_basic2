@@ -114,33 +114,37 @@
                 }
             })
         })
+        </script>
 
-        window.onload = function () {
-            // 상품 카드 드래그 시작하면
-            document.querySelector('.card').addEventListener('dragstart', (e) => {
-                e.preventDefault();
-                // 카드의 정보를 setData에 저장
-                // e.dataTransfer.setData('index', e.innerHTML)
-            })
+        <script>
+        // window.onload = function () {}
+        // window.addEventListener('load', function () {})
 
-            document.getElementById('cart').addEventListener('dragover', function (e) {
-                e.preventDefault();
-            })
+        // 상품 카드 드래그 시작하면
+        $('.card').on('dragstart', function(e){
+            e.preventDefault();
+            console.log('drag start');
+        })
 
-            // 상품 카드를 cart 박스 안에 놓으면
-            document.getElementById('cart').addEventListener('drop', function (e) {
-                e.preventDefault();
-                e.dataTransfer.getData('index')
-                // if 같은 종류 상품이 없다면
-                // 검은 영역 안에 카드 생성
-                // else 상품의 수량 + 1
-            })
+        document.getElementById('cart').addEventListener('dragover', (e) => {
+            e.preventDefault();
+            console.log('drag over');
+        })
+
+        // 상품 카드를 cart 박스 안에 놓으면
+        document.getElementById('cart').addEventListener('drop', (e) => {
+            e.preventDefault();
+            console.log('dropped');
+            // console.log(e.dataTransfer.getData('index'));
+            // if 같은 종류 상품이 없다면
+            // 검은 영역 안에 카드 생성
+            // else 상품의 수량 + 1
+        })
 
             // 담기 버튼 누르면
             // if 같은 종류 상품이 없다면
             // 검은 영역 안에 카드 생성
             // else 상품의 수량 + 1
-        }
     </script>
 
 </body>
