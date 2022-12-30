@@ -78,6 +78,7 @@
                 </div>`
                 $('.col').eq(i).append(cardTemplate);
             }
+
             // 상품 카드 드래그 시작하면
             var cardId = null;
             var cardIdArray = [];
@@ -96,31 +97,72 @@
             document.getElementById('cart').addEventListener('drop', (e) => {
                 e.preventDefault();
                 // cartQuantity가 0이라면 내용 싹 비우기
-                if (cartQuantity == 0){
+                if (cartQuantity == 0) {
                     $('#cart').html('');
+                    cartCardTemplate = `<div class="col d-flex justify-content-center">
+                        <div class="card m-2 p-2 border-0 rounded-0" data-cardid=${cardId} style="width: 18vw; max-width: 230px;">
+                            <img src=${data.products[cardId].photo} class="card-img-top rounded-0" alt="...">
+                            <div class="card-body rounded-0">
+                                <h5 class="card-title fw-bold text-center">${data.products[cardId].title}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted text-center">${data.products[cardId].brand}</h6>
+                                <p class="card-text fs-5 text-center">${data.products[cardId].price}</p>
+                                <input class="text-center" value="1" style="width: 100%;">
+                            </div>
+                        </div>
+                    </div>`
+                    // cart div박스 안에 cartCardTemplate를 append
+                    $('#cart').append(cartCardTemplate);
+                    cardIdArray.push(cardId);
+                    cartQuantity++;
+                }
+                // 아니라면 for문 돌려서
+                else {
+                    for (i = 0; i < cardIdArray.length; i++) {
+                        // 같은 거 있으면 input.value에 +1 (수정중)
+                        if (cardId == cardIdArray[i]) {
+                            var currentValue = Number($('.card-body input').val());
+                            $('.card-body input').val(currentValue + 1);
+                        }
+                        // 없으면 카드 추가
+                        else {
+                            cartCardTemplate = `<div class="col d-flex justify-content-center">
+                                <div class="card m-2 p-2 border-0 rounded-0" data-cardid=${cardId} style="width: 18vw; max-width: 230px;">
+                                    <img src=${data.products[cardId].photo} class="card-img-top rounded-0" alt="...">
+                                    <div class="card-body rounded-0">
+                                        <h5 class="card-title fw-bold text-center">${data.products[cardId].title}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted text-center">${data.products[cardId].brand}</h6>
+                                        <p class="card-text fs-5 text-center">${data.products[cardId].price}</p>
+                                        <input class="text-center" value="1" style="width: 100%;">
+                                    </div>
+                                </div>
+                            </div>`
+                            // cart div박스 안에 cartCardTemplate를 append
+                            $('#cart').append(cartCardTemplate);
+                            cardIdArray.push(cardId);
+                            cartQuantity++;
+                        }
+                    }
                 }
 
                 // cart 안에 같은 종류 상품이 있는지 없는지 비교 방법
                 // 1. drop시 cardIdArray의 요소 중 cardId와 일치하는 것 있는지 검사 (for문 사용)
-                // cardIdArray.push(cardId);
-                // console.log(cardIdArray);
 
                 // 2. if 같은 종류 상품이 없다면
                 // cardid를 index로 store.json에서 데이터 추출 및 새 card 제작
-                cartCardTemplate = `<div class="col d-flex justify-content-center">
-                    <div class="card m-2 p-2 border-0 rounded-0" data-cardid=${cardId} style="width: 18vw; max-width: 230px;">
-                        <img src=${data.products[cardId].photo} class="card-img-top rounded-0" alt="...">
-                        <div class="card-body rounded-0">
-                            <h5 class="card-title fw-bold text-center">${data.products[cardId].title}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted text-center">${data.products[cardId].brand}</h6>
-                            <p class="card-text fs-5 text-center">${data.products[cardId].price}</p>
-                            <input class="text-center" value="1" style="width: 100%;">
-                        </div>
-                    </div>
-                </div>`
+                // cartCardTemplate = `<div class="col d-flex justify-content-center">
+                //     <div class="card m-2 p-2 border-0 rounded-0" data-cardid=${cardId} style="width: 18vw; max-width: 230px;">
+                //         <img src=${data.products[cardId].photo} class="card-img-top rounded-0" alt="...">
+                //         <div class="card-body rounded-0">
+                //             <h5 class="card-title fw-bold text-center">${data.products[cardId].title}</h5>
+                //             <h6 class="card-subtitle mb-2 text-muted text-center">${data.products[cardId].brand}</h6>
+                //             <p class="card-text fs-5 text-center">${data.products[cardId].price}</p>
+                //             <input class="text-center" value="1" style="width: 100%;">
+                //         </div>
+                //     </div>
+                // </div>`
                 // cart div박스 안에 cartCardTemplate를 append
-                $('#cart').append(cartCardTemplate);
-                cartQuantity++;
+                // $('#cart').append(cartCardTemplate);
+                // cartQuantity++;
 
                 // 3. else 상품의 수량 + 1
             })
