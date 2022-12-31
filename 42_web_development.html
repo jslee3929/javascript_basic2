@@ -144,9 +144,59 @@
                     }
                     quantityAppended = false;
                 }
-                // (숙제1) 중복되는 코드 함수화
-                // (숙제2) 담기 버튼 기능 구현
-                // (숙제3) 검색결과에서도 드래그 및 담기를 통한 상품 추가 기능 구현
+            })
+
+            // 담기 버튼 기능 구현
+            $('.btn').on('click', function (e) {
+                cardIndex = Number(e.target.parentElement.parentElement.dataset.cardid);
+                var cartCards = document.querySelectorAll('#cartcard');
+                // cart에 카드가 없으면
+                if (cartCards.length == 0) {
+                    // 내용 싹 비우기
+                    $('#cart').html('');
+                    // #cart div박스 안에 cartCardTemplate를 append
+                    cartCardTemplate = `<div class="col d-flex justify-content-center">
+                        <div class="card m-2 p-2 border-0 rounded-0" id="cartcard" data-cardid=${store.products[cardIndex].id} style="width: 18vw; max-width: 230px;">
+                            <img src=${store.products[cardIndex].photo} class="card-img-top rounded-0" alt="...">
+                            <div class="card-body rounded-0">
+                                <h5 class="card-title fw-bold text-center">${store.products[cardIndex].title}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted text-center">${store.products[cardIndex].brand}</h6>
+                                <p class="card-text fs-5 text-center">${store.products[cardIndex].price}</p>
+                                <input class="text-center" value="1" style="width: 100%;">
+                            </div>
+                        </div>
+                    </div>`
+                    $('#cart').append(cartCardTemplate);
+                }
+                // cartCard가 존재하는데 같은 카드가 있으면 수량 +1
+                else {
+                    // #cart 안에 같은 id를 가진 card가 있는지 검사
+                    for (let i = 0; i < cartCards.length; i++) {
+                        var cartCard = cartCards[i]
+                        if (cardIndex == cartCard.dataset.cardid) {
+                            var quantityBox = document.querySelectorAll('#cartcard input')[i]
+                            var currentValue = Number(quantityBox.value);
+                            quantityBox.value = currentValue + 1;
+                            quantityAppended = true;
+                        }
+                    }
+                    // 없으면 카드 추가
+                    if (quantityAppended == false) {
+                        cartCardTemplate = `<div class="col d-flex justify-content-center">
+                            <div class="card m-2 p-2 border-0 rounded-0" id="cartcard" data-cardid=${store.products[cardIndex].id} style="width: 18vw; max-width: 230px;">
+                                <img src=${store.products[cardIndex].photo} class="card-img-top rounded-0" alt="...">
+                                <div class="card-body rounded-0">
+                                    <h5 class="card-title fw-bold text-center">${store.products[cardIndex].title}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted text-center">${store.products[cardIndex].brand}</h6>
+                                    <p class="card-text fs-5 text-center">${store.products[cardIndex].price}</p>
+                                    <input class="text-center" value="1" style="width: 100%;">
+                                </div>
+                            </div>
+                        </div>`
+                        $('#cart').append(cartCardTemplate);
+                    }
+                    quantityAppended = false;
+                }
             })
         })
 
@@ -165,7 +215,7 @@
             $.get('store.json').done(function (store) {
                 for (let i in searchResultIndex) {
                     // searchResultIndex 배열에 있는 index의 템플릿 생성
-                    var cardTemplate = `<div class="card m-2 border-0 rounded-0" draggable="true" style="width: 100%;">
+                    var cardTemplate = `<div class="card m-2 border-0 rounded-0" data-cardid=${store.products[searchResultIndex[i]].id} draggable="true" style="width: 100%;">
                         <img src=${store.products[searchResultIndex[i]].photo} class="card-img-top rounded-0" alt="...">
                         <div class="card-body rounded-0">
                             <h5 class="card-title fw-bold">${store.products[searchResultIndex[i]].title}</h5>
@@ -186,6 +236,8 @@
                 }
             })
         })
+        // (숙제1) 중복되는 코드 함수화
+        // (숙제3) 검색결과에서도 드래그 및 담기를 통한 상품 추가 기능 구현
     </script>
 
 </body>
