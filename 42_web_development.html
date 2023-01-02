@@ -63,9 +63,16 @@
 
     <script>
         // store.json의 내용을 card-box에 추가
-        var cardTemplate = undefined;
-        function createCard(store, index) {
-            cardTemplate = `<div class="card m-2 border-0 rounded-0" draggable="true" data-cardid=${store.products[index].id} style="width: 100%;">
+        $.get('store.json').done(function (store) {
+            var cardTemplate = undefined;
+            var cardIndex = undefined;
+            var cartCardTemplate = undefined;
+            var quantityAppended = false;
+            var searchBox = document.getElementById('search')
+
+            function createCard(store, index) {
+                cardTemplate = `<div class="card m-2 border-0 rounded-0" draggable="true" 
+                                data-cardid=${store.products[index].id} style="width: 100%;">
                     <img src=${store.products[index].photo} class="card-img-top rounded-0" alt="...">
                     <div class="card-body rounded-0">
                         <h5 class="card-title fw-bold text-black">${store.products[index].title}</h5>
@@ -74,24 +81,13 @@
                         <a href="#" class="btn btn-dark">담기</a>
                     </div>
                 </div>`
-            return cardTemplate
-        }
-
-        $.get('store.json').done(function (store) {
-            // 카드 생성
-            for (let i in Object.keys(store.products)) {
-                createCard(store, i)
-                $('.col').eq(i).append(cardTemplate);
+                return cardTemplate
             }
-
-            // 상품 카드 드래그 시작하면
-            var cardIndex = undefined;
-            var cartCardTemplate = undefined;
-            var quantityAppended = false;
 
             function createCartCard(store, cardIndex) {
                 cartCardTemplate = `<div class="col d-flex justify-content-center">
-                        <div class="card m-2 p-2 border-0 rounded-0" id="cartcard" data-cardid=${store.products[cardIndex].id} style="width: 18vw; max-width: 230px;">
+                        <div class="card m-2 p-2 border-0 rounded-0" id="cartcard" 
+                        data-cardid=${store.products[cardIndex].id} style="width: 18vw; max-width: 230px;">
                             <img src=${store.products[cardIndex].photo} class="card-img-top rounded-0" alt="...">
                             <div class="card-body rounded-0">
                                 <h5 class="card-title fw-bold text-center">${store.products[cardIndex].title}</h5>
@@ -104,9 +100,45 @@
                 return cartCardTemplate
             }
 
+            // 카드 생성
+            for (let i in Object.keys(store.products)) {
+                createCard(store, i)
+                $('.col').eq(i).append(cardTemplate);
+            }
+
+            // input에 입력값이 들어오면
+            searchBox.addEventListener('input', function () {
+                // card-box의 내용물을 비우고
+                $('#card-box').html(`<div class="col"></div>
+                                    <div class="col"></div>
+                                    <div class="col"></div>
+                                    <div class="col"></div>`);
+                
+                var j = 0;
+                var searchLength = searchBox.value.length
+                for (let i in store.products) {
+                    // store.products.title과 겹치는 글자가 있으면
+                    if (store.products[i].title.includes(searchBox.value)) {
+                        // 카드 생성
+                        createCard(store, i)
+                        // title 중 일치하는 부분을 형광펜 표시
+                        // cardTemplate의 제목 부분에서 검색어가 시작되는 index를 찾음
+                        var highlightIndex = store.products[i].title.indexOf(searchBox.value)
+                        // 검색어 부분을 찾아서 하이라이트
+                        var highlightText = `<span style="background: yellow">${store.products[i].title.substr(highlightIndex, searchLength)}</span>`
+                        // 해당 index에서 searchLength만큼의 문자열을 하이라이트된 문자열로 replace
+                        var highlightedCardTemplate = cardTemplate.replace(searchBox.value, highlightText)
+                        $('.col').eq(j).append(highlightedCardTemplate); // 생성한 템플릿을 html에 삽입
+                        j++;
+                    }
+                }
+            })
+
+            // 상품 카드 드래그 시작하면
             $('.card').on('dragstart', function (e) {
                 // cardid 읽어오기
                 cardIndex = Number(e.target.dataset.cardid);
+                console.log(cardIndex);
             })
 
             document.getElementById('cart').addEventListener('dragover', (e) => {
@@ -171,35 +203,6 @@
                         $('#cart').append(cartCardTemplate);
                     }
                     quantityAppended = false;
-                }
-            })
-        })
-
-        var searchBox = document.getElementById('search')
-        searchBox.addEventListener('input', function () { // input에 입력값이 들어오면
-            $.get('store.json').done(function (store) {
-                $('#card-box').html(`<div class="col-3"></div><div class="col-3"></div><div class="col-3"></div><div class="col-3"></div>`); // card-box의 내용물을 싹 비우고
-                var searchResultIndex = []
-                for (let i in store.products) {
-                    if (store.products[i].title.includes(searchBox.value)) { // input의 value를 store.json의 products.title과 비교
-                        searchResultIndex.push(i); // 일치하는 검색 결과의 index를 searchResultIndex 배열에 추가
-                    }
-                }
-
-                var j = 0;
-                var searchLength = searchBox.value.length
-                for (let i in searchResultIndex) {
-                    // searchResultIndex 배열에 있는 index의 템플릿 생성
-                    createCard(store, searchResultIndex[i])
-                    // title 중 일치하는 부분을 형광펜 표시
-                    // cardTemplate의 제목 부분에서 검색어가 시작되는 index를 찾음
-                    var highlightIndex = store.products[searchResultIndex[i]].title.indexOf(searchBox.value)
-                    // 검색어 부분을 찾아서 하이라이트
-                    var highlightText = `<span style="background: yellow">${store.products[searchResultIndex[i]].title.substr(highlightIndex, searchLength)}</span>`
-                    // 해당 index에서 searchLength만큼의 문자열을 하이라이트된 문자열로 replace
-                    var highlightedCardTemplate = cardTemplate.replace(searchBox.value, highlightText)
-                    $('.col-3').eq(j).append(highlightedCardTemplate); // 생성한 템플릿을 html에 삽입
-                    j++;
                 }
             })
         })
