@@ -106,37 +106,8 @@
                 $('.col').eq(i).append(cardTemplate);
             }
 
-            // input에 입력값이 들어오면
-            searchBox.addEventListener('input', function () {
-                // card-box의 내용물을 비우고
-                $('#card-box').html(`<div class="col"></div>
-                                    <div class="col"></div>
-                                    <div class="col"></div>
-                                    <div class="col"></div>`);
-                
-                var j = 0;
-                var searchLength = searchBox.value.length
-                for (let i in store.products) {
-                    // store.products.title과 겹치는 글자가 있으면
-                    if (store.products[i].title.includes(searchBox.value)) {
-                        // 카드 생성
-                        createCard(store, i)
-                        // title 중 일치하는 부분을 형광펜 표시
-                        // cardTemplate의 제목 부분에서 검색어가 시작되는 index를 찾음
-                        var highlightIndex = store.products[i].title.indexOf(searchBox.value)
-                        // 검색어 부분을 찾아서 하이라이트
-                        var highlightText = `<span style="background: yellow">${store.products[i].title.substr(highlightIndex, searchLength)}</span>`
-                        // 해당 index에서 searchLength만큼의 문자열을 하이라이트된 문자열로 replace
-                        var highlightedCardTemplate = cardTemplate.replace(searchBox.value, highlightText)
-                        $('.col').eq(j).append(highlightedCardTemplate); // 생성한 템플릿을 html에 삽입
-                        j++;
-                    }
-                }
-            })
-
-            // 상품 카드 드래그 시작하면
+            // 드래그 앤 드롭 이벤트 구현
             $('.card').on('dragstart', function (e) {
-                // cardid 읽어오기
                 cardIndex = Number(e.target.dataset.cardid);
                 console.log(cardIndex);
             })
@@ -145,22 +116,16 @@
                 e.preventDefault();
             })
 
-            // 상품 카드를 cart 박스 안에 놓으면
             document.getElementById('cart').addEventListener('drop', (e) => {
                 var cartCards = document.querySelectorAll('#cartcard');
                 e.preventDefault();
 
-                // cart에 카드가 없으면
                 if (cartCards.length == 0) {
-                    // 내용 싹 비우기
                     $('#cart').html('');
-                    // #cart div박스 안에 cartCardTemplate를 append
                     createCartCard(store, cardIndex)
                     $('#cart').append(cartCardTemplate);
                 }
-                // cartCard가 존재하는데 같은 카드가 있으면 수량 +1
                 else {
-                    // #cart 안에 같은 id를 가진 card가 있는지 검사
                     for (let i = 0; i < cartCards.length; i++) {
                         var cartCard = cartCards[i]
                         if (cardIndex == cartCard.dataset.cardid) {
@@ -170,7 +135,6 @@
                             quantityAppended = true;
                         }
                     }
-                    // 없으면 카드 추가
                     if (quantityAppended == false) {
                         createCartCard(store, cardIndex)
                         $('#cart').append(cartCardTemplate);
@@ -205,8 +169,95 @@
                     quantityAppended = false;
                 }
             })
+
+            // 검색 기능 구현
+            searchBox.addEventListener('input', function () {
+                $('#card-box').html(`<div class="col"></div>
+                                    <div class="col"></div>
+                                    <div class="col"></div>
+                                    <div class="col"></div>`);
+
+                var j = 0;
+                var searchLength = searchBox.value.length
+                for (let i in store.products) {
+                    if (store.products[i].title.includes(searchBox.value)) {
+                        createCard(store, i)
+                        var highlightIndex = store.products[i].title.indexOf(searchBox.value)
+                        var highlightText = `<span style="background: yellow">${store.products[i].title.substr(highlightIndex, searchLength)}</span>`
+                        var highlightedCardTemplate = cardTemplate.replace(searchBox.value, highlightText)
+                        $('.col').eq(j).append(highlightedCardTemplate);
+                        j++;
+                    }
+                }
+
+                $('.card').on('dragstart', function (e) {
+                    cardIndex = Number(e.target.dataset.cardid);
+                    console.log(cardIndex);
+                })
+
+                document.getElementById('cart').addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                })
+
+                document.getElementById('cart').addEventListener('drop', (e) => {
+                    var cartCards = document.querySelectorAll('#cartcard');
+                    e.preventDefault();
+                    // e.stopImmediatePropagation();
+
+                    if (cartCards.length == 0) {
+                        console.log('new card in empty cart')
+                        $('#cart').html('');
+                        createCartCard(store, cardIndex)
+                        $('#cart').append(cartCardTemplate);
+                    }
+                    else {
+                        for (let i = 0; i < cartCards.length; i++) {
+                            e.stopImmediatePropagation();
+                            var cartCard = cartCards[i]
+                            if (cardIndex == cartCard.dataset.cardid) {
+                                var quantityBox = document.querySelectorAll('#cartcard input')[i]
+                                var currentValue = Number(quantityBox.value);
+                                quantityBox.value = currentValue + 1;
+                                quantityAppended = true;
+                                console.log('quantity appended')
+                            }
+                        }
+                        if (quantityAppended == false) {
+                            createCartCard(store, cardIndex)
+                            $('#cart').append(cartCardTemplate);
+                        }
+                        quantityAppended = false;
+                    }
+                })
+
+                // 담기 버튼 기능 구현
+                $('.btn').on('click', function (e) {
+                    e.preventDefault(); // 버튼 클릭 시 자동 스크롤 방지
+                    cardIndex = Number(e.target.parentElement.parentElement.dataset.cardid);
+                    createCartCard(store, cardIndex)
+                    var cartCards = document.querySelectorAll('#cartcard');
+                    if (cartCards.length == 0) {
+                        $('#cart').html('');
+                        $('#cart').append(cartCardTemplate);
+                    }
+                    else {
+                        for (let i = 0; i < cartCards.length; i++) {
+                            var cartCard = cartCards[i]
+                            if (cardIndex == cartCard.dataset.cardid) {
+                                var quantityBox = document.querySelectorAll('#cartcard input')[i]
+                                var currentValue = Number(quantityBox.value);
+                                quantityBox.value = currentValue + 1;
+                                quantityAppended = true;
+                            }
+                        }
+                        if (quantityAppended == false) {
+                            $('#cart').append(cartCardTemplate);
+                        }
+                        quantityAppended = false;
+                    }
+                })
+            })
         })
-        // (숙제3) 검색결과에서도 드래그 및 담기를 통한 상품 추가 기능 구현
     </script>
 
 </body>
