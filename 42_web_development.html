@@ -57,6 +57,13 @@
         </div>
     </div>
 
+    <!-- Final Price -->
+    <div class="container mt-4">
+        <div class="fs-4 fw-bold">최종가격</div>
+        <div class="fs-5">합계 <span class="final-price"></span></div>
+        <a href="#" class="btn btn-dark mt-3" id="buy-btn">구매하기</a>
+    </div>
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -78,7 +85,7 @@
                         <h5 class="card-title fw-bold text-black">${store.products[index].title}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">${store.products[index].brand}</h6>
                         <p class="card-text fs-5">가격 : ${store.products[index].price}</p>
-                        <a href="#" class="btn btn-dark">담기</a>
+                        <a href="#" class="btn btn-dark add-btn">담기</a>
                     </div>
                 </div>`
                 return cardTemplate
@@ -93,11 +100,25 @@
                                 <h5 class="card-title fw-bold text-center">${store.products[cardIndex].title}</h5>
                                 <h6 class="card-subtitle mb-2 text-muted text-center">${store.products[cardIndex].brand}</h6>
                                 <p class="card-text fs-5 text-center">${store.products[cardIndex].price}</p>
-                                <input class="text-center" value="1" style="width: 100%;">
+                                <input class="text-center quantity" value="1" style="width: 100%;">
                             </div>
                         </div>
                     </div>`
                 return cartCardTemplate
+            }
+
+            // 최종가격 계산
+            let finalPrice = 0;
+            function calculatePrice() {
+                finalPrice = 0;
+                // cart의 input.value * price 값을 return
+                for (let i = 0; i < $('#cart .card-body').length; i++) {
+                    var quantity = Number($('#cart .card-body input').eq(i).val());
+                    var price = Number($('#cart .card-body input').eq(i).siblings('p').text());
+                    finalPrice = finalPrice + quantity * price;
+                }
+
+                return finalPrice
             }
 
             var addCartBtn = function (e) {
@@ -124,6 +145,10 @@
                     }
                     quantityAppended = false;
                 }
+
+                // 최종가격 계산
+                calculatePrice()
+                document.querySelector('.final-price').innerHTML = finalPrice
             }
 
             var itemDrop = function (e) {
@@ -151,6 +176,10 @@
                     }
                     quantityAppended = false;
                 }
+
+                // 최종가격 계산
+                calculatePrice()
+                document.querySelector('.final-price').innerHTML = finalPrice
             }
 
             // 카드 생성
@@ -159,7 +188,7 @@
                 $('.col').eq(i).append(cardTemplate);
             }
 
-            // 드래그 앤 드롭 이벤트 구현
+            // 드래그 앤 드롭으로 장바구니에 추가
             $('.card').on('dragstart', function (e) {
                 cardIndex = Number(e.target.dataset.cardid);
             })
@@ -170,8 +199,8 @@
 
             document.getElementById('cart').addEventListener('drop', itemDrop)
 
-            // 담기 버튼 기능 구현
-            $('.btn').on('click', addCartBtn)
+            // 담기 버튼으로 장바구니에 추가
+            $('.add-btn').on('click', addCartBtn)
 
             // 검색 기능 구현
             searchBox.addEventListener('input', function () {
@@ -193,6 +222,7 @@
                     }
                 }
 
+                // 검색 결과 드래그 앤 드롭으로 장바구니에 추가
                 $('.card').on('dragstart', function (e) {
                     cardIndex = Number(e.target.dataset.cardid);
                 })
@@ -203,8 +233,19 @@
 
                 document.getElementById('cart').addEventListener('drop', itemDrop)
 
-                // 담기 버튼 기능 구현
-                $('.btn').on('click', addCartBtn)
+                // 검색 결과 담기 버튼으로 장바구니에 추가
+                $('.add-btn').on('click', addCartBtn)
+            })
+            
+            // cart 내의 input.value 변경 시 calculatePrice() 실행
+            $(document).on('keyup', '.quantity', function (e) {
+                calculatePrice();
+                document.querySelector('.final-price').innerHTML = finalPrice
+            })
+
+            // 구매버튼
+            document.querySelector('#buy-btn').addEventListener('click', function(e){
+
             })
         })
     </script>
