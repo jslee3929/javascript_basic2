@@ -100,51 +100,7 @@
                 return cartCardTemplate
             }
 
-            // 카드 생성
-            for (let i in Object.keys(store.products)) {
-                createCard(store, i)
-                $('.col').eq(i).append(cardTemplate);
-            }
-
-            // 드래그 앤 드롭 이벤트 구현
-            $('.card').on('dragstart', function (e) {
-                cardIndex = Number(e.target.dataset.cardid);
-                console.log(cardIndex);
-            })
-
-            document.getElementById('cart').addEventListener('dragover', (e) => {
-                e.preventDefault();
-            })
-
-            document.getElementById('cart').addEventListener('drop', (e) => {
-                var cartCards = document.querySelectorAll('#cartcard');
-                e.preventDefault();
-
-                if (cartCards.length == 0) {
-                    $('#cart').html('');
-                    createCartCard(store, cardIndex)
-                    $('#cart').append(cartCardTemplate);
-                }
-                else {
-                    for (let i = 0; i < cartCards.length; i++) {
-                        var cartCard = cartCards[i]
-                        if (cardIndex == cartCard.dataset.cardid) {
-                            var quantityBox = document.querySelectorAll('#cartcard input')[i]
-                            var currentValue = Number(quantityBox.value);
-                            quantityBox.value = currentValue + 1;
-                            quantityAppended = true;
-                        }
-                    }
-                    if (quantityAppended == false) {
-                        createCartCard(store, cardIndex)
-                        $('#cart').append(cartCardTemplate);
-                    }
-                    quantityAppended = false;
-                }
-            })
-
-            // 담기 버튼 기능 구현
-            $('.btn').on('click', function (e) {
+            var addCartBtn = function (e) {
                 e.preventDefault(); // 버튼 클릭 시 자동 스크롤 방지
                 cardIndex = Number(e.target.parentElement.parentElement.dataset.cardid);
                 createCartCard(store, cardIndex)
@@ -168,7 +124,54 @@
                     }
                     quantityAppended = false;
                 }
+            }
+
+            var itemDrop = function (e) {
+                var cartCards = document.querySelectorAll('#cartcard');
+                e.preventDefault();
+
+                if (cartCards.length == 0) {
+                    $('#cart').html('');
+                    createCartCard(store, cardIndex)
+                    $('#cart').append(cartCardTemplate);
+                }
+                else {
+                    for (let i = 0; i < cartCards.length; i++) {
+                        var cartCard = cartCards[i]
+                        if (cardIndex == cartCard.dataset.cardid) {
+                            var quantityBox = document.querySelectorAll('#cartcard input')[i]
+                            var currentValue = Number(quantityBox.value);
+                            quantityBox.value = currentValue + 1;
+                            quantityAppended = true;
+                        }
+                    }
+                    if (quantityAppended == false) {
+                        createCartCard(store, cardIndex)
+                        $('#cart').append(cartCardTemplate);
+                    }
+                    quantityAppended = false;
+                }
+            }
+
+            // 카드 생성
+            for (let i in Object.keys(store.products)) {
+                createCard(store, i)
+                $('.col').eq(i).append(cardTemplate);
+            }
+
+            // 드래그 앤 드롭 이벤트 구현
+            $('.card').on('dragstart', function (e) {
+                cardIndex = Number(e.target.dataset.cardid);
             })
+
+            document.getElementById('cart').addEventListener('dragover', (e) => {
+                e.preventDefault();
+            })
+
+            document.getElementById('cart').addEventListener('drop', itemDrop)
+
+            // 담기 버튼 기능 구현
+            $('.btn').on('click', addCartBtn)
 
             // 검색 기능 구현
             searchBox.addEventListener('input', function () {
@@ -192,70 +195,16 @@
 
                 $('.card').on('dragstart', function (e) {
                     cardIndex = Number(e.target.dataset.cardid);
-                    console.log(cardIndex);
                 })
 
                 document.getElementById('cart').addEventListener('dragover', (e) => {
                     e.preventDefault();
                 })
 
-                document.getElementById('cart').addEventListener('drop', (e) => {
-                    var cartCards = document.querySelectorAll('#cartcard');
-                    e.preventDefault();
-                    // e.stopImmediatePropagation();
-
-                    if (cartCards.length == 0) {
-                        console.log('new card in empty cart')
-                        $('#cart').html('');
-                        createCartCard(store, cardIndex)
-                        $('#cart').append(cartCardTemplate);
-                    }
-                    else {
-                        for (let i = 0; i < cartCards.length; i++) {
-                            e.stopImmediatePropagation();
-                            var cartCard = cartCards[i]
-                            if (cardIndex == cartCard.dataset.cardid) {
-                                var quantityBox = document.querySelectorAll('#cartcard input')[i]
-                                var currentValue = Number(quantityBox.value);
-                                quantityBox.value = currentValue + 1;
-                                quantityAppended = true;
-                                console.log('quantity appended')
-                            }
-                        }
-                        if (quantityAppended == false) {
-                            createCartCard(store, cardIndex)
-                            $('#cart').append(cartCardTemplate);
-                        }
-                        quantityAppended = false;
-                    }
-                })
+                document.getElementById('cart').addEventListener('drop', itemDrop)
 
                 // 담기 버튼 기능 구현
-                $('.btn').on('click', function (e) {
-                    e.preventDefault(); // 버튼 클릭 시 자동 스크롤 방지
-                    cardIndex = Number(e.target.parentElement.parentElement.dataset.cardid);
-                    createCartCard(store, cardIndex)
-                    var cartCards = document.querySelectorAll('#cartcard');
-                    if (cartCards.length == 0) {
-                        $('#cart').html('');
-                        $('#cart').append(cartCardTemplate);
-                    }
-                    else {
-                        for (let i = 0; i < cartCards.length; i++) {
-                            var cartCard = cartCards[i]
-                            if (cardIndex == cartCard.dataset.cardid) {
-                                var quantityBox = document.querySelectorAll('#cartcard input')[i]
-                                var currentValue = Number(quantityBox.value);
-                                quantityBox.value = currentValue + 1;
-                                quantityAppended = true;
-                            }
-                        }
-                        if (quantityAppended == false) {
-                            $('#cart').append(cartCardTemplate);
-                        }
-                        quantityAppended = false;
-                    }
-                })
+                $('.btn').on('click', addCartBtn)
             })
         })
     </script>
