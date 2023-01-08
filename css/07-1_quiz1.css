@@ -18,6 +18,11 @@
     padding: 30px;
 }
 
+#canvas {
+    background: black;
+    border-radius: 5px;
+}
+
 .show {
     display: block;
 }

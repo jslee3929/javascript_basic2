@@ -13,15 +13,17 @@
 
 <body class="m-0 border-0 bg-light">
     <!-- Modal Window -->
-    <div class="container modal">
-        <div>성함</div>
-        <input>
-        <div>연락처</div>
-        <input>
-        <a href="#" class="btn btn-dark">입력완료</a>
-        <a href="#" class="btn btn-dark">닫기</a>
+    <div class="black-bg">
+        <div class="white-bg">
+            <div>성함</div>
+            <input>
+            <div>연락처</div>
+            <input><br>
+            <a href="#" class="btn btn-dark" id="submit">입력완료</a>
+            <a href="#" class="btn btn-dark" id="close">닫기</a>
+        </div>
     </div>
-    
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-dark">
         <div class="container-fluid">
@@ -73,6 +75,12 @@
         <div class="fs-4 fw-bold">최종가격</div>
         <div class="fs-5">합계 <span class="final-price"></span></div>
         <a href="#" class="btn btn-dark mt-3" id="buy-btn">구매하기</a>
+    </div>
+
+    <!-- Receipt -->
+    <div class="canvas-box">
+        <canvas id="canvas" width="350" height="700"></canvas>
+        <button class="close-receipt">닫기</button>
     </div>
 
     <!-- jQuery -->
@@ -247,7 +255,7 @@
                 // 검색 결과 담기 버튼으로 장바구니에 추가
                 $('.add-btn').on('click', addCartBtn)
             })
-            
+
             // cart 내의 input.value 변경 시 calculatePrice() 실행
             $(document).on('keyup', '.quantity', function (e) {
                 calculatePrice();
@@ -255,8 +263,63 @@
             })
 
             // 구매버튼
-            document.querySelector('#buy-btn').addEventListener('click', function(e){
+            document.querySelector('#buy-btn').addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector('.black-bg').classList.add('show');
+            })
 
+            // 구매창 나가기
+            document.querySelector('.black-bg').addEventListener('click', function (e) {
+                if (e.target == this) {
+                    document.querySelector('.black-bg').classList.remove('show');
+                }
+            })
+
+            document.querySelector('#close').addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector('.black-bg').classList.remove('show');
+            })
+
+            var canvas = document.getElementById('canvas');
+            var c = canvas.getContext('2d');
+
+            // Submit 버튼
+            document.querySelector('#submit').addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector('.black-bg').classList.remove('show');
+
+                // c.fillStyle = "rgb(0, 0, 0)";
+                c.font = 'bold 20px dotum';
+                c.fillText('영수증', 30, 30);
+
+                var today = new Date();
+                var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+                var textposition = 90;
+
+                c.font = 'bold 15px dotum';
+                c.fillText(date + " " + time, 30, 70);
+                for (let i = 0; i < $('#cart .card-body').length; i++) {
+                    var name = $('#cart .card-body input').eq(i).siblings('h5').text();
+                    var brand = $('#cart .card-body input').eq(i).siblings('h6').text();
+                    var quantity = Number($('#cart .card-body input').eq(i).val());
+                    var price = Number($('#cart .card-body input').eq(i).siblings('p').text());
+
+                    c.fillText('제품명: ' + name, 30, textposition + 20)
+                    c.fillText('브랜드: ' + brand, 30, textposition + 40)
+                    c.fillText('수량: ' + quantity, 30, textposition + 60)
+                    c.fillText('개당 가격: ' + price, 30, textposition + 80)
+                    textposition += 100;
+                }
+                c.fillText("총 합계 : " + finalPrice, 30, textposition + 20)
+                document.querySelector('.canvas-box').classList.add('show');
+            })
+
+            // Close-Receipt 버튼
+            document.querySelector('.close-receipt').addEventListener('click', function (e) {
+                document.querySelector('.canvas-box').classList.remove('show');
+                c.clearRect(0, 0, canvas.width, canvas.height);
             })
         })
     </script>
